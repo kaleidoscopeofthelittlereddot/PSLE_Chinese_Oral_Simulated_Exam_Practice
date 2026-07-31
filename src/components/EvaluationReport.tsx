@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Award, CheckCircle2, AlertCircle, RefreshCw, FileText, ChevronRight, BookOpen, Star, HelpCircle, ArrowLeft, GraduationCap, Sparkles, Volume2, VolumeX, Download, Copy, Check, FileAudio, Clock } from 'lucide-react';
 import { ExamReport, ChatMessage } from '../types';
 import { speakChineseText, stopSpeaking } from '../lib/speech';
 import { downloadAudioFile } from './OralExamSession';
+import { getAllAudioBackups, AudioBackupRecord } from '../lib/audioBackupDB';
 
 interface EvaluationReportProps {
   report: ExamReport;
@@ -16,6 +17,14 @@ interface EvaluationReportProps {
 export default function EvaluationReport({ report, theme, chatHistory, onRestart, onBackToMenu, onGoToFeedback }: EvaluationReportProps) {
   const [playingQ, setPlayingQ] = useState<string | null>(null);
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const [dbBackups, setDbBackups] = useState<AudioBackupRecord[]>([]);
+
+  // Load persistent IndexedDB audio backups as fallback
+  useEffect(() => {
+    getAllAudioBackups()
+      .then((backups) => setDbBackups(backups || []))
+      .catch((err) => console.warn('Failed to load IndexedDB audio backups:', err));
+  }, []);
 
   // Determine Grade Band (PSLE 看录像说话 30分制)
   const getGradeBand = (score: number) => {
@@ -50,6 +59,30 @@ export default function EvaluationReport({ report, theme, chatHistory, onRestart
     return studentMsgs[qNum - 1] || null;
   };
 
+
+  const getStudentAudioForQ = (qNum: number) => {
+    const chatMsg = getStudentAnswerForQ(qNum);
+    if (chatMsg && (chatMsg.audioUrl || chatMsg.audioBase64)) {
+      return {
+        audioUrl: chatMsg.audioUrl,
+        audioMimeType: chatMsg.audioMimeType,
+        text: chatMsg.text,
+      };
+    }
+
+    // IndexedDB Fallback Lookup
+    const dbRecord = dbBackups.find(b => b.questionNumber === qNum) || dbBackups[qNum - 1];
+    if (dbRecord && dbRecord.audioDataUrl) {
+      return {
+        audioUrl: dbRecord.audioDataUrl,
+        audioMimeType: dbRecord.audioMimeType,
+        text: dbRecord.text || chatMsg?.text || '',
+      };
+    }
+
+    return chatMsg ? { audioUrl: undefined, audioMimeType: undefined, text: chatMsg.text } : null;
+  };
+
   const getExaminerQuestionForQ = (qNum: number): string => {
     if (chatHistory && chatHistory.length > 0) {
       const tagged = chatHistory.find(m => m.sender === 'examiner' && m.questionNumber === qNum);
@@ -73,7 +106,9 @@ export default function EvaluationReport({ report, theme, chatHistory, onRestart
     const studentTranscripts = [1, 2, 3, 4].map(num => {
       const qText = getExaminerQuestionForQ(num);
       const msg = getStudentAnswerForQ(num);
-      return `【考官第 ${num} 题提问】：${qText}\n【学生第 ${num} 题作答】：${msg ? msg.text : '（详见随附的第 ' + num + ' 题录音文件）'}`;
+      const audioInfo = getStudentAudioForQ(num);
+      const answerText = msg?.text || audioInfo?.text || '';
+      return `【考官第 ${num} 题提问】：${qText}\n【学生第 ${num} 题作答】：${answerText || (audioInfo?.audioUrl ? '（详见随附的第 ' + num + ' 题录音文件）' : '（未检测到作答）')}`;
     }).join('\n\n');
 
     const promptText = `你是一位经验丰富的新加坡教育部 (MOE) PSLE 华文口试特级考官。
@@ -703,12 +738,12 @@ ${studentTranscripts}
                 {report.analysis.q1}
               </p>
             </div>
-            {getStudentAnswerForQ(1)?.audioUrl && (
+            {getStudentAudioForQ(1)?.audioUrl && (
               <div className="pt-2 border-t border-natural-border flex items-center justify-between gap-2">
-                <audio src={getStudentAnswerForQ(1)!.audioUrl} controls className="h-7 max-w-[160px]" />
+                <audio src={getStudentAudioForQ(1)!.audioUrl} controls className="h-7 max-w-[160px]" />
                 <button
                   type="button"
-                  onClick={() => downloadAudioFile(getStudentAnswerForQ(1)!.audioUrl!, `Student_Oral_Answer_Q1_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAnswerForQ(1)!.audioMimeType)}
+                  onClick={() => downloadAudioFile(getStudentAudioForQ(1)!.audioUrl!, `Student_Oral_Answer_Q1_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAudioForQ(1)!.audioMimeType)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-natural-sage text-white text-[10.5px] font-bold hover:bg-[#5E6D55] transition shadow-xs cursor-pointer shrink-0"
                 >
                   <Download className="h-3 w-3" />
@@ -733,12 +768,12 @@ ${studentTranscripts}
                 {report.analysis.q2}
               </p>
             </div>
-            {getStudentAnswerForQ(2)?.audioUrl && (
+            {getStudentAudioForQ(2)?.audioUrl && (
               <div className="pt-2 border-t border-natural-border flex items-center justify-between gap-2">
-                <audio src={getStudentAnswerForQ(2)!.audioUrl} controls className="h-7 max-w-[160px]" />
+                <audio src={getStudentAudioForQ(2)!.audioUrl} controls className="h-7 max-w-[160px]" />
                 <button
                   type="button"
-                  onClick={() => downloadAudioFile(getStudentAnswerForQ(2)!.audioUrl!, `Student_Oral_Answer_Q2_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAnswerForQ(2)!.audioMimeType)}
+                  onClick={() => downloadAudioFile(getStudentAudioForQ(2)!.audioUrl!, `Student_Oral_Answer_Q2_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAudioForQ(2)!.audioMimeType)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-natural-sage text-white text-[10.5px] font-bold hover:bg-[#5E6D55] transition shadow-xs cursor-pointer shrink-0"
                 >
                   <Download className="h-3 w-3" />
@@ -763,12 +798,12 @@ ${studentTranscripts}
                 {report.analysis.q3}
               </p>
             </div>
-            {getStudentAnswerForQ(3)?.audioUrl && (
+            {getStudentAudioForQ(3)?.audioUrl && (
               <div className="pt-2 border-t border-natural-border flex items-center justify-between gap-2">
-                <audio src={getStudentAnswerForQ(3)!.audioUrl} controls className="h-7 max-w-[160px]" />
+                <audio src={getStudentAudioForQ(3)!.audioUrl} controls className="h-7 max-w-[160px]" />
                 <button
                   type="button"
-                  onClick={() => downloadAudioFile(getStudentAnswerForQ(3)!.audioUrl!, `Student_Oral_Answer_Q3_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAnswerForQ(3)!.audioMimeType)}
+                  onClick={() => downloadAudioFile(getStudentAudioForQ(3)!.audioUrl!, `Student_Oral_Answer_Q3_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAudioForQ(3)!.audioMimeType)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-natural-sage text-white text-[10.5px] font-bold hover:bg-[#5E6D55] transition shadow-xs cursor-pointer shrink-0"
                 >
                   <Download className="h-3 w-3" />
@@ -793,12 +828,12 @@ ${studentTranscripts}
                 {report.analysis.q4}
               </p>
             </div>
-            {getStudentAnswerForQ(4)?.audioUrl && (
+            {getStudentAudioForQ(4)?.audioUrl && (
               <div className="pt-2 border-t border-natural-border flex items-center justify-between gap-2">
-                <audio src={getStudentAnswerForQ(4)!.audioUrl} controls className="h-7 max-w-[160px]" />
+                <audio src={getStudentAudioForQ(4)!.audioUrl} controls className="h-7 max-w-[160px]" />
                 <button
                   type="button"
-                  onClick={() => downloadAudioFile(getStudentAnswerForQ(4)!.audioUrl!, `Student_Oral_Answer_Q4_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAnswerForQ(4)!.audioMimeType)}
+                  onClick={() => downloadAudioFile(getStudentAudioForQ(4)!.audioUrl!, `Student_Oral_Answer_Q4_Audio_${new Date().toISOString().slice(0, 10)}`, getStudentAudioForQ(4)!.audioMimeType)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-natural-sage text-white text-[10.5px] font-bold hover:bg-[#5E6D55] transition shadow-xs cursor-pointer shrink-0"
                 >
                   <Download className="h-3 w-3" />
@@ -833,6 +868,11 @@ ${studentTranscripts}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {[1, 2, 3, 4].map(qNum => {
               const studentAnswer = getStudentAnswerForQ(qNum);
+              const studentAudio = getStudentAudioForQ(qNum);
+              const audioUrl = studentAudio?.audioUrl;
+              const mimeType = studentAudio?.audioMimeType;
+              const displayText = studentAnswer?.text || studentAudio?.text || '未检测到录音作答';
+
               return (
                 <div key={qNum} className="bg-white p-3 rounded-xl border border-emerald-200/60 space-y-2 flex flex-col justify-between">
                   <div>
@@ -843,17 +883,16 @@ ${studentTranscripts}
                       </span>
                     </div>
                     <p className="text-[11px] text-gray-600 line-clamp-2 font-medium">
-                      {studentAnswer ? studentAnswer.text : '未检测到录音作答'}
+                      {displayText}
                     </p>
                   </div>
 
-                  {studentAnswer?.audioUrl ? (
+                  {audioUrl ? (
                     <div className="space-y-1.5 pt-1 border-t border-slate-100">
-                      <audio src={studentAnswer.audioUrl} controls className="h-6 w-full" />
+                      <audio src={audioUrl} controls className="h-6 w-full" />
                       <button
                         type="button"
-                        onClick={() => downloadAudioFile(studentAnswer.audioUrl!, `Student_Oral_Answer_Q${qNum}_Audio_${new Date().toISOString().slice(0, 10)}`, studentAnswer.audioMimeType)}
-                        className="w-full inline-flex items-center justify-center gap-1 py-1.5 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold transition cursor-pointer"
+                        onClick={() => downloadAudioFile(audioUrl, `Student_Oral_Answer_Q${qNum}_Audio_${new Date().toISOString().slice(0, 10)}`, mimeType)}                        className="w-full inline-flex items-center justify-center gap-1 py-1.5 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold transition cursor-pointer"
                       >
                         <Download className="h-3.5 w-3.5" />
                         <span>下载第 {qNum} 题音频 clip</span>

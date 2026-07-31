@@ -1,6 +1,6 @@
 {
-  "name": "PSLE Chinese Mock Oral Exam",
-  "description": "A realistic Singapore MOE PSLE Chinese Oral Exam Simulator with video conversation, voice feedback, and a detailed evaluation report.",
+  "name": "PSLE Chinese Oral Simulated Exam Practice",
+  "description": "PSLE Chinese Oral Simulated Exam Practice with conversational practice, voice feedback, and a detailed evaluation report.",
   "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -189,6 +189,7 @@ export default function OralExamSession({
   const streamRef = useRef<MediaStream | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const initialTriggeredRef = useRef<boolean>(false);
+  const pendingAudioRef = useRef<{ audioDataUrl: string; mimeType: string; base64Audio: string } | null>(null);
 
   useEffect(() => {
     const recognizer = new ChineseSpeechRecognizer();
@@ -373,23 +374,33 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
   const handleStudentSubmit = async (answerText: string, audioUrl?: string, audioMimeType?: string, audioBase64?: string) => {
     if (!answerText.trim() || isLoadingResponse) return;
 
+    // Use passed audio parameters or fallback to cached pendingAudioRef from local recording
+    const finalAudioUrl = audioUrl || pendingAudioRef.current?.audioDataUrl;
+    const finalAudioMimeType = audioMimeType || pendingAudioRef.current?.mimeType;
+    const finalAudioBase64 = audioBase64 || pendingAudioRef.current?.base64Audio;
+
+    // Reset pending audio ref after consumption
+    pendingAudioRef.current = null;
+
     const finalPauseSec = pauseTimeRef.current;
     const finalAnswerSec = answerTimeRef.current;
 
+    // Create student message
     const studentMessage: ChatMessage = {
       id: `student-${Date.now()}`,
       sender: 'student',
       text: answerText.trim(),
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      audioUrl: audioUrl,
-      audioMimeType: audioMimeType,
-      audioBase64: audioBase64,
+      audioUrl: finalAudioUrl,
+      audioMimeType: finalAudioMimeType,
+      audioBase64: finalAudioBase64,
       questionNumber: currentQuestionIndex,
       pauseTimeSec: finalPauseSec,
       answerTimeSec: finalAnswerSec,
     };
 
-    if (audioUrl || audioBase64) {
+    // Backup to persistent IndexedDB immediately
+    if (finalAudioUrl || finalAudioBase64) {
       saveAudioBackup({
         id: `Q${currentQuestionIndex}_${Date.now()}`,
         questionNumber: currentQuestionIndex,
@@ -526,6 +537,15 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
       });
       base64Audio = await base64Promise;
 
+ // Cache recorded audio in pendingAudioRef so manual submit or fallback can use it
+      if (audioDataUrl || base64Audio) {
+        pendingAudioRef.current = {
+          audioDataUrl: audioDataUrl || '',
+          mimeType: mimeType,
+          base64Audio: base64Audio,
+        };
+      }
+
       const localCapturedText = textInput.trim() || interimTranscript.trim();
       if (localCapturedText) {
         setTextInput('');
@@ -600,6 +620,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
       setIsExaminerSpeaking(false);
       setInterimTranscript('');
       setTextInput('');
+      pendingAudioRef.current = null;
       setTimingPhase('answering');
       setAnswerTimeSec(0);
       answerTimeRef.current = 0;
