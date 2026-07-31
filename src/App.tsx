@@ -461,7 +461,7 @@ JSON 必须包含以下结构：
     <span className="text-[10px] mt-0.5 text-center">
       * <strong>免责声明：</strong> 本应用由 Google Gemini API 提供技术支持。人工智能生成的输出可能会存在错误，请务必自行核实所有重要的反馈与分析信息。
     </span>
-        <a href="/intro.html#disclaimer" className="mt-2 text-[11px] text-gray-400 hover:text-red-500 underline transition">
+        <a href="../index.html#disclaimer" className="mt-2 text-[11px] text-gray-400 hover:text-red-500 underline transition">
       <strong>条款与免责声明 Terms & Disclaimer</strong>
     </a>
 
