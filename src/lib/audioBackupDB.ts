@@ -1,0 +1,91 @@
+// IndexedDB Utility for Automatic Local Audio Backup of Oral Exam Sessions
+
+const DB_NAME = 'PSLE_OralExam_BackupDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'audio_recordings';
+
+export interface AudioBackupRecord {
+  id: string; // e.g. "Q1", "Q2", "Q3", "Q4"
+  questionNumber: number;
+  theme: string;
+  audioBlob?: Blob;
+  audioDataUrl?: string;
+  audioMimeType?: string;
+  text?: string;
+  timestamp: string;
+}
+
+export const initDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined' || !window.indexedDB) {
+      reject(new Error('IndexedDB is not supported in this environment'));
+      return;
+    }
+
+    const request = window.indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      }
+    };
+  });
+};
+
+export const saveAudioBackup = async (record: AudioBackupRecord): Promise<void> => {
+  try {
+    const db = await initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.put(record);
+
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (err) {
+    console.warn('Failed to save audio backup to IndexedDB:', err);
+  }
+};
+
+export const getAllAudioBackups = async (): Promise<AudioBackupRecord[]> => {
+  try {
+    const db = await initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (err) {
+    console.warn('Failed to fetch audio backups from IndexedDB:', err);
+    return [];
+  }
+};
+
+export const clearAudioBackups = async (): Promise<void> => {
+  try {
+    const db = await initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.clear();
+
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (err) {
+    console.warn('Failed to clear audio backups in IndexedDB:', err);
+  }
+};

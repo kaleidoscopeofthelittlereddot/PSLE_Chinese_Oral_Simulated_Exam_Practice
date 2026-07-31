@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Georgia&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Georgia", "Kaiti", "STKaiti", "KaiTi", "楷体", serif;
+  --font-display: "Georgia", "Kaiti", "STKaiti", "KaiTi", "楷体", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-moe-red: #d11c1c;
+  --color-moe-blue: #0f3d7a;
+
+  --color-natural-bg: #FDFCF8;
+  --color-natural-text: #4A443F;
+  --color-natural-beige: #F2EDE4;
+  --color-natural-border: #E0D8CB;
+  --color-natural-muted: #8C8479;
+  --color-natural-sage: #7A8C70;
+  --color-natural-coral: #D98E73;
+  --color-natural-coral-dark: #C27A60;
+  --color-natural-gold: #A67C52;
+  --color-natural-dark-beige: #E8E3D9;
+  --color-natural-heading: #5C564F;
+}
+
+html {
+  font-size: 18px; /* Base font size increased by 2pt (16px -> 18px / 12pt -> 13.5pt) */
+}
+
+body {
+  background-color: var(--color-natural-bg);
+  color: var(--color-natural-text);
+  font-family: "Georgia", "Kaiti", "STKaiti", "KaiTi", "楷体", serif;
+}
+
+/* Custom visual pulse for microphone */
+@keyframes voice-pulse {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.15); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 0.3; }
+}
+
+.voice-pulse-active {
+  animation: voice-pulse 1.5s infinite ease-in-out;
+}
+
+
