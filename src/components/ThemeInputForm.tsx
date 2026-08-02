@@ -14,7 +14,7 @@ const PRESETS: ExamConfig[] = [
     scenes: [
       { sceneNumber: 1, description: '一位男士一边开信箱，一边把传单丢在地上，过后清洁工人看到地上的垃圾，失望地摇摇头。' },
       { sceneNumber: 2, description: '一群年轻人喝完饮料，把空罐留在公园里的长椅就离开，一位学生经过看到后，帮忙把空罐丢进垃圾桶。' },
-      { sceneNumber: 3, description: '一群学生在海边捡拾被海浪冲上岸的塑料瓶，并齐心协力解救了一只被塑料袋困住的海龟。' }
+      { sceneNumber: 3, description: '一群学生在海边捡拾被海浪冲上岸的塑料瓶，并齐心协力解救了一只被塑料袋困住的海星。' }
     ]
   },
   {
@@ -348,9 +348,9 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
               1. 选择考试主题 (Select Exam Theme)
             </label>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-  		从以下 30 个预先设定的常见口试主题中选择，也可以修改或自定主题。</p>
+  		从以下 30 个预先设定的口试主题中选择，也可以修改或自定主题。</p>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-Please select from the following 30 common oral themes for your practice. You can also edit or customise with your own theme and scenarios.
+Please select from the following 30 preset oral themes for your practice. You can also edit or customise with your own theme and scenarios.
 		</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-72 overflow-y-auto p-2 border border-[#EADFCD] rounded-xl bg-white shadow-inner custom-scrollbar">
               {PRESETS.map((preset, idx) => (
@@ -418,9 +418,9 @@ Please select from the following 30 common oral themes for your practice. You ca
               </button>
             </div>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-		在这次的模拟考试中，将不会提供任何录像，学生会聆听旁白和录像场景描述。</p>
+		模拟口试练习将不会提供任何录像，系统会直接朗读旁白和录像场景描述。</p>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-		No actual video will be played. Scenario descriptions and narrations will be read aloud to the student.</p>
+		No actual video will be played. Scenario descriptions and narration will be read aloud.</p>
             <div className="space-y-4">
               {scenes.map((scene, idx) => (
                 <div key={idx} className="flex gap-4 items-start bg-white p-4 rounded-xl border border-natural-border shadow-sm group">
@@ -461,26 +461,16 @@ Please select from the following 30 common oral themes for your practice. You ca
               className="w-full flex items-center justify-center gap-2 rounded-xl bg-natural-coral hover:bg-natural-coral-dark px-6 py-4 text-sm font-bold text-white shadow-lg shadow-natural-coral/20 focus:outline-none transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] cursor-pointer"
             >
               <Sparkles className="h-5 w-5" />
-              <span>进入看录像说话环节 (Start Mock Exam)</span>
+              <span>进入看录像说话环节 Start Session</span>
               <ArrowRight className="h-5 w-5" />
             </button>
-	<div style={{ fontSize: '0.7rem', color: '#857d75', textAlign: 'center', marginTop: '20px', lineHeight: 1.6 }}>
-  <button 
-    type="button"
-    onClick={() => {
-      localStorage.removeItem('user_gemini_api_key');
-      window.location.reload();
-    }} 
-    className="text-[12px] text-gray-400 hover:text-red-500 underline underline-offset-2 transition cursor-pointer"
-  >
-    更改 API 密钥 Change API Key
-  </button>
-</div>
+
           </div>
 
         </form>
 
       </div>
+
     </div>
   );
 };

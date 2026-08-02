@@ -31,7 +31,7 @@ export default function EvaluationReport({ report, theme, chatHistory, onRestart
     if (score >= 25) return { label: '优秀 (Excellent)', color: 'text-natural-sage bg-natural-sage/10 border-natural-sage/20', desc: '内容丰富充实，切合主题；表达非常流利，新加坡华语词汇与成语连词运用极佳。' };
     if (score >= 19) return { label: '良好 (Good)', color: 'text-natural-gold bg-natural-gold/10 border-natural-gold/20', desc: '内容基本完整，能清楚表达观点与经历，发音准确，发挥稳定。' };
     if (score >= 13) return { label: '及格 (Satisfactory)', color: 'text-natural-coral-dark bg-natural-coral/15 border-natural-coral/25', desc: '能做基本回答，但细节与例子不足，词汇较为平淡，有少许断续。' };
-    return { label: '需努力 (Needs Improvement)', color: 'text-red-700 bg-red-50 border-red-200', desc: '内容单薄，回答过短且常需考官提示引导，需多练习口语词汇与表达。' };
+    return { label: '需努力 (Needs Improvement)', color: 'text-red-700 bg-red-50 border-red-200', desc: '内容单薄，回答过短且常需虚拟考官提示引导，需多练习口语词汇与表达。' };
   };
 
   const grade = getGradeBand(report.score);
@@ -108,7 +108,7 @@ export default function EvaluationReport({ report, theme, chatHistory, onRestart
       const msg = getStudentAnswerForQ(num);
       const audioInfo = getStudentAudioForQ(num);
       const answerText = msg?.text || audioInfo?.text || '';
-      return `【考官第 ${num} 题提问】：${qText}\n【学生第 ${num} 题作答】：${answerText || (audioInfo?.audioUrl ? '（详见随附的第 ' + num + ' 题录音文件）' : '（未检测到作答）')}`;
+      return `【虚拟考官第 ${num} 题提问】：${qText}\n【学生第 ${num} 题作答】：${answerText || (audioInfo?.audioUrl ? '（详见随附的第 ' + num + ' 题录音文件）' : '（未检测到作答）')}`;
     }).join('\n\n');
 
     const promptText = `你是一位经验丰富的新加坡教育部 (MOE) PSLE 华文口试特级考官。
@@ -170,7 +170,7 @@ ${studentTranscripts}
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>PSLE 华文模拟口试评分报告 - ${cleanTheme}</title>
+  <title>PSLE 华文模拟口试练习综合评估 - ${cleanTheme}</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; padding: 32px; color: #2D3748; background: #fff; max-width: 880px; margin: 0 auto; line-height: 1.6; }
     .header { border-bottom: 3px solid #7A8C70; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -205,11 +205,12 @@ ${studentTranscripts}
   </div>
   <div class="header">
     <div>
-      <h1>PSLE 华文模拟口试评分报告</h1>
+      <h1>PSLE 华文模拟口试练习综合评估</h1>
       <div class="subtitle">口试主题：${cleanTheme} | 评估日期：${new Date().toLocaleDateString('zh-CN')}</div>
+      <p style="font-size: 8px;"><strong>This performance assessment is based on the independent grading rubric of our app for practice reference only and does not reflect official PSLE scoring standards.</strong></p>
     </div>
     <div class="score-badge">
-      <div style="font-size: 11px; color: #718096; font-weight: bold;">预估得分</div>
+      <div style="font-size: 11px; color: #718096; font-weight: bold;">这次练习评估</div>
       <div class="score-num">${report.score} <span style="font-size: 16px; color: #A0AEC0;">/ 30</span></div>
       <div style="font-size: 11px; font-weight: bold; color: #7A8C70; margin-top: 4px;">${grade.label}</div>
     </div>
@@ -227,7 +228,7 @@ ${studentTranscripts}
     <strong>总评语：</strong>${grade.desc}
   </div>
 
-  <div class="section-title">一、模拟口试评分 (Marking Breakdown)</div>
+  <div class="section-title">一、模拟口试练习综合评估 (Performance Assessment)</div>
   ${report.rubric_breakdown ? `
   <div class="rubric-grid">
     <div class="rubric-item">
@@ -334,51 +335,51 @@ ${studentTranscripts}
 
   ${report.teacher_coaching_feedback ? `
   <div style="background: #FEFCBF; border: 1px solid #F6E05E; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: #744210;">
-    <strong>🎓 林老师导师总结建议：</strong> ${report.teacher_coaching_feedback}
+    <strong>🎓 AI 林老师总结建议：</strong> ${report.teacher_coaching_feedback}
   </div>
   ` : ''}
 
   <div class="section-title">二、答题步骤与内容分析 (Itemized Rubric Evaluation)</div>
   <div class="q-card">
     <div class="q-title">【第一题 Q1】录像内容与感受</div>
-    <div class="q-question"><strong>❓ 考官提问：</strong>${q1Question}</div>
+    <div class="q-question"><strong>❓ 虚拟考官提问：</strong>${q1Question}</div>
     <div class="q-text">${report.analysis.q1}</div>
   </div>
   <div class="q-card">
     <div class="q-title">【第二题 Q2】相关个人经历分享</div>
-    <div class="q-question"><strong>❓ 考官提问：</strong>${q2Question}</div>
+    <div class="q-question"><strong>❓ 虚拟考官提问：</strong>${q2Question}</div>
     <div class="q-text">${report.analysis.q2}</div>
   </div>
   <div class="q-card">
     <div class="q-title">【第三题 Q3】针对主题发表看法</div>
-    <div class="q-question"><strong>❓ 考官提问：</strong>${q3Question}</div>
+    <div class="q-question"><strong>❓ 虚拟考官提问：</strong>${q3Question}</div>
     <div class="q-text">${report.analysis.q3}</div>
   </div>
   <div class="q-card">
     <div class="q-title">【第四题 Q4】建议与改进措施</div>
-    <div class="q-question"><strong>❓ 考官提问：</strong>${q4Question}</div>
+    <div class="q-question"><strong>❓ 虚拟考官提问：</strong>${q4Question}</div>
     <div class="q-text">${report.analysis.q4}</div>
   </div>
 
-  <div class="section-title">三、林老师模范答案示范 (Teacher Lin Model Answers)</div>
+  <div class="section-title">三、AI 林老师模范答案示范 (AI Teacher Lin Model Answers)</div>
   <div class="model-card">
-    <div class="model-title">【第一题 Q1 模范答案示范】录像看图说细节</div>
-    <div class="model-q"><strong>针对考官提问：</strong>“${q1Question}”</div>
+    <div class="model-title">【第一题 Q1 模范答案示范】看录像说细节</div>
+    <div class="model-q"><strong>针对虚拟考官提问：</strong>“${q1Question}”</div>
     <div class="q-text">${modelAnswers.q1}</div>
   </div>
   <div class="model-card">
     <div class="model-title">【第二题 Q2 模范答案示范】个人经历分享</div>
-    <div class="model-q"><strong>针对考官提问：</strong>“${q2Question}”</div>
+    <div class="model-q"><strong>针对虚拟考官提问：</strong>“${q2Question}”</div>
     <div class="q-text">${modelAnswers.q2}</div>
   </div>
   <div class="model-card">
     <div class="model-title">【第三题 Q3 模范答案示范】针对主题发表看法</div>
-    <div class="model-q"><strong>针对考官提问：</strong>“${q3Question}”</div>
+    <div class="model-q"><strong>针对虚拟考官提问：</strong>“${q3Question}”</div>
     <div class="q-text">${modelAnswers.q3}</div>
   </div>
   <div class="model-card">
     <div class="model-title">【第四题 Q4 模范答案示范】建议与改进措施</div>
-    <div class="model-q"><strong>针对考官提问：</strong>“${q4Question}”</div>
+    <div class="model-q"><strong>针对虚拟考官提问：</strong>“${q4Question}”</div>
     <div class="q-text">${modelAnswers.q4}</div>
   </div>
 
@@ -391,7 +392,7 @@ ${studentTranscripts}
       </ol>
     </div>
     <div>
-      <h3 style="font-size: 13px; color: #9B2C2C; margin-bottom: 8px;">建议改进的 3 个提升空间：</h3>
+      <h3 style="font-size: 13px; color: #9B2C2C; margin-bottom: 8px;">建议改进的 3 个改进建议：</h3>
       <ol>
         ${report.weaknesses.slice(0, 3).map(w => `<li>${w}</li>`).join('')}
       </ol>
@@ -409,7 +410,7 @@ ${studentTranscripts}
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `PSLE_华文模拟口试评分报告_${cleanTheme}_${todayDate}.html`);
+    link.setAttribute('download', `PSLE_华文模拟口试练习综合评估_${cleanTheme}_${todayDate}.html`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -444,13 +445,16 @@ ${studentTranscripts}
           </div>
         )}
         
+{/* Main Header Container (Wraps both text and score badge) */}
         <div className="p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Left Side: Titles and Disclaimer */}
           <div className="space-y-2 text-center md:text-left flex-1">
             <span className="inline-flex rounded-full bg-natural-beige px-2.5 py-0.5 text-xs font-bold text-natural-sage ring-1 ring-natural-sage/15 uppercase tracking-wider">
-              Singapore PSLE Chinese Oral Examination Report
+              PSLE Chinese Oral Practice Simulator Performance Assessment
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-natural-heading">
-              PSLE 华文模拟口试评分报告
+              PSLE 华文模拟口试练习综合评估
             </h2>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-3 text-natural-muted text-xs font-bold">
               <span className="flex items-center gap-1">
@@ -458,13 +462,16 @@ ${studentTranscripts}
                 主题：{cleanTheme}
               </span>
               <span className="hidden sm:inline">•</span>
-              <span>满分：30 分 (PSLE 录像会话满分标准)</span>
+              <span>满分：30 分 (看录像说话)</span>
             </div>
+            <p className="text-[8pt] text-black">
+              This performance assessment is based on the independent grading rubric of our app for practice reference only and does not reflect official PSLE scoring standards.
+            </p>
           </div>
 
-          {/* Large dynamic Score Badge */}
+          {/* Right Side: Large dynamic Score Badge */}
           <div className="flex flex-col items-center justify-center p-6 bg-natural-beige/20 rounded-2xl border border-natural-border shadow-sm shrink-0 min-w-[160px]">
-            <span className="text-[10px] font-bold text-natural-muted uppercase tracking-widest font-mono">预估得分</span>
+            <span className="text-[10px] font-bold text-natural-muted uppercase tracking-widest font-mono">这次练习评估</span>
             <div className="flex items-baseline gap-1 mt-1">
               <span className="text-5xl font-display font-extrabold text-natural-sage">{report.score}</span>
               <span className="text-xl font-bold text-natural-muted">/30</span>
@@ -473,7 +480,8 @@ ${studentTranscripts}
               {grade.label}
             </span>
           </div>
-        </div>
+
+        </div> {/* 
 
         {/* Evaluation description banner */}
         <div className="bg-natural-beige/30 border-t border-natural-border p-5 flex items-start gap-3">
@@ -490,7 +498,7 @@ ${studentTranscripts}
         <div className="border-t border-natural-border bg-white p-5 space-y-4">
           <h4 className="text-xs font-bold text-natural-heading uppercase tracking-wider flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 text-natural-sage" />
-            模拟口试评分 (Marking Breakdown)
+            模拟口试练习评分 (Marking Breakdown)
           </h4>
 
           {report.rubric_breakdown ? (
@@ -635,7 +643,7 @@ ${studentTranscripts}
                 考场答题节奏与停顿时间实测 (Fluency & Pacing Timing Analysis)
               </h5>
               <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-200">
-                AI 考官精准实测
+                虚拟考官精准实测
               </span>
             </div>
 
@@ -643,7 +651,7 @@ ${studentTranscripts}
               <div className="bg-white p-3 rounded-lg border border-amber-200/80 shadow-2xs flex items-center justify-between">
                 <div>
                   <span className="text-[11px] font-bold text-amber-900 block">⏱️ 平均思考停顿时间 (Avg. Pause Time)</span>
-                  <span className="text-[10px] text-amber-700/80">考官提问完毕至点击话筒秒数</span>
+                  <span className="text-[10px] text-amber-700/80">虚拟考官提问完毕至点击话筒秒数</span>
                 </div>
                 <span className="text-xl font-extrabold font-mono text-amber-900">
                   {avgPauseTime !== null ? `${avgPauseTime} 秒` : '未实测'}
@@ -703,7 +711,7 @@ ${studentTranscripts}
             <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-1">
               <span className="font-bold text-xs text-amber-900 flex items-center gap-1.5">
                 <GraduationCap className="h-4 w-4 text-amber-700" />
-                林老师导师总结建议：
+                AI 林老师导师总结建议：
               </span>
               <p className="text-xs text-amber-950 font-medium leading-relaxed">
                 {report.teacher_coaching_feedback}
@@ -731,7 +739,7 @@ ${studentTranscripts}
                 <span className="text-[11px] font-bold text-natural-heading bg-natural-beige/50 px-2 py-0.5 rounded-md">录像内容与感受</span>
               </div>
               <div className="bg-natural-beige/40 p-2.5 rounded-lg border border-natural-border/70 text-xs space-y-0.5">
-                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 考官提问：</span>
+                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 虚拟考官提问：</span>
                 <p className="text-natural-heading font-medium italic">{getExaminerQuestionForQ(1)}</p>
               </div>
               <p className="text-xs text-natural-text leading-relaxed font-semibold">
@@ -761,7 +769,7 @@ ${studentTranscripts}
                 <span className="text-[11px] font-bold text-natural-heading bg-natural-beige/50 px-2 py-0.5 rounded-md">相关个人经历分享</span>
               </div>
               <div className="bg-natural-beige/40 p-2.5 rounded-lg border border-natural-border/70 text-xs space-y-0.5">
-                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 考官提问：</span>
+                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 虚拟考官提问：</span>
                 <p className="text-natural-heading font-medium italic">{getExaminerQuestionForQ(2)}</p>
               </div>
               <p className="text-xs text-natural-text leading-relaxed font-semibold">
@@ -791,7 +799,7 @@ ${studentTranscripts}
                 <span className="text-[11px] font-bold text-natural-heading bg-natural-beige/50 px-2 py-0.5 rounded-md">针对主题发表看法</span>
               </div>
               <div className="bg-natural-beige/40 p-2.5 rounded-lg border border-natural-border/70 text-xs space-y-0.5">
-                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 考官提问：</span>
+                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 虚拟考官提问：</span>
                 <p className="text-natural-heading font-medium italic">{getExaminerQuestionForQ(3)}</p>
               </div>
               <p className="text-xs text-natural-text leading-relaxed font-semibold">
@@ -821,7 +829,7 @@ ${studentTranscripts}
                 <span className="text-[11px] font-bold text-natural-heading bg-natural-beige/50 px-2 py-0.5 rounded-md">建议与改进措施</span>
               </div>
               <div className="bg-natural-beige/40 p-2.5 rounded-lg border border-natural-border/70 text-xs space-y-0.5">
-                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 考官提问：</span>
+                <span className="font-bold text-natural-sage text-[10.5px] block">❓ 虚拟考官提问：</span>
                 <p className="text-natural-heading font-medium italic">{getExaminerQuestionForQ(4)}</p>
               </div>
               <p className="text-xs text-natural-text leading-relaxed font-semibold">
@@ -919,7 +927,7 @@ ${studentTranscripts}
             </div>
             <div>
               <h3 className="font-bold text-amber-900 text-base flex items-center gap-2">
-                林老师模范答案示范
+                AI 林老师模范答案示范
                 <Sparkles className="h-4 w-4 text-amber-600 animate-pulse" />
               </h3>
               <p className="text-xs text-amber-800/80 font-medium">
@@ -933,7 +941,7 @@ ${studentTranscripts}
           {/* Q1 Model Answer */}
           <div className="bg-white rounded-xl p-5 border border-amber-200/60 shadow-sm space-y-3 relative group">
             <div className="flex items-center justify-between border-b border-amber-100 pb-2">
-              <span className="font-bold text-xs text-amber-900 font-mono">Q1 录像看图说细节 模范答案</span>
+              <span className="font-bold text-xs text-amber-900 font-mono">Q1 看录像说细节 模范答案</span>
               <button
                 onClick={() => handleTogglePlayModel('q1', modelAnswers.q1)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
@@ -947,7 +955,7 @@ ${studentTranscripts}
               </button>
             </div>
             <div className="text-[11px] text-amber-900/90 font-medium bg-amber-100/50 p-2 rounded-md border border-amber-200/50">
-              <span className="font-bold">针对考官提问：</span>“{getExaminerQuestionForQ(1)}”
+              <span className="font-bold">针对虚拟考官提问：</span>“{getExaminerQuestionForQ(1)}”
             </div>
             <p className="text-xs text-natural-heading leading-relaxed font-medium bg-amber-50/30 p-3 rounded-lg border border-amber-100/50">
               {modelAnswers.q1}
@@ -971,7 +979,7 @@ ${studentTranscripts}
               </button>
             </div>
             <div className="text-[11px] text-amber-900/90 font-medium bg-amber-100/50 p-2 rounded-md border border-amber-200/50">
-              <span className="font-bold">针对考官提问：</span>“{getExaminerQuestionForQ(2)}”
+              <span className="font-bold">针对虚拟考官提问：</span>“{getExaminerQuestionForQ(2)}”
             </div>
             <p className="text-xs text-natural-heading leading-relaxed font-medium bg-amber-50/30 p-3 rounded-lg border border-amber-100/50">
               {modelAnswers.q2}
@@ -995,7 +1003,7 @@ ${studentTranscripts}
               </button>
             </div>
             <div className="text-[11px] text-amber-900/90 font-medium bg-amber-100/50 p-2 rounded-md border border-amber-200/50">
-              <span className="font-bold">针对考官提问：</span>“{getExaminerQuestionForQ(3)}”
+              <span className="font-bold">针对虚拟考官提问：</span>“{getExaminerQuestionForQ(3)}”
             </div>
             <p className="text-xs text-natural-heading leading-relaxed font-medium bg-amber-50/30 p-3 rounded-lg border border-amber-100/50">
               {modelAnswers.q3}
@@ -1019,7 +1027,7 @@ ${studentTranscripts}
               </button>
             </div>
             <div className="text-[11px] text-amber-900/90 font-medium bg-amber-100/50 p-2 rounded-md border border-amber-200/50">
-              <span className="font-bold">针对考官提问：</span>“{getExaminerQuestionForQ(4)}”
+              <span className="font-bold">针对虚拟考官提问：</span>“{getExaminerQuestionForQ(4)}”
             </div>
             <p className="text-xs text-natural-heading leading-relaxed font-medium bg-amber-50/30 p-3 rounded-lg border border-amber-100/50">
               {modelAnswers.q4}
@@ -1054,7 +1062,7 @@ ${studentTranscripts}
         <div className="bg-white rounded-2xl border border-natural-border p-6 shadow-sm space-y-4">
           <div className="flex items-center gap-2 border-b border-natural-border pb-3">
             <AlertCircle className="h-5 w-5 text-natural-coral-dark" />
-            <h3 className="font-bold text-natural-heading text-sm">建议改进的 3 个提升空间 (Top 3 Areas to Improve)</h3>
+            <h3 className="font-bold text-natural-heading text-sm">建议改进的 3 个方面 (Top 3 Areas to Improve)</h3>
           </div>
 
           <ul className="space-y-3">
@@ -1085,7 +1093,7 @@ ${studentTranscripts}
           className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100/70 text-emerald-800 px-4 py-3 text-xs font-bold shadow-sm transition cursor-pointer"
         >
           <GraduationCap className="h-4 w-4 text-emerald-600" />
-          <span>开启林老师语音点评</span>
+          <span>开启AI林老师语音点评</span>
         </button>
 
         <button

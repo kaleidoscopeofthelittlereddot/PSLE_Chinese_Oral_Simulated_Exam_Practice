@@ -307,7 +307,7 @@ export default function VideoPlayer({ config, onFinishedWatching }: VideoPlayerP
           </h4>
           <p className="text-natural-text text-xs leading-relaxed max-w-xl font-medium">
             考生共有 <span className="font-bold text-natural-sage font-mono">6 分钟</span> 的看视频、听旁白与思考准备时间（倒计时：<span className="font-bold font-mono">{formatTime(prepTimeLeft)}</span>）。
-            你可以反复播放并观察细节。准备完毕后，请点击右侧按钮进入考场，考官将对你提问 4个问题。
+            你可以反复播放并观察细节。准备完毕后，请点击右侧按钮进入考场，虚拟考官将对你提问 4个问题。
           </p>
         </div>
 

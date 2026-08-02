@@ -38,13 +38,13 @@ function generateDynamicFeedbackFallback(feedbackTurn: number, themeStr: string)
   if (turn === 1) {
     return `${apologyHeader}\n\n针对《${cleanTheme}》主题，基于默认通用的满分答题框架，老师为您预估的分数为 23 分（满分30分）。针对这组题目，您觉得哪一题最难回答呢？`;
   } else if (turn === 2) {
-    return `[系统提示：基于默认通用答案的示范] 针对第1题，老师为您示范高分答案：“在录像中，我看到与《${cleanTheme}》相关的关键场景。主人公展现了良好的文明公德心。看到这一幕，我深受感动，觉得我们都应该向他学习。”您觉得这样表达是不是更清楚呢？`;
+    return `非常抱歉！由于系统技术故障或网络超时，因此老师无法为您提供个性化专属点评。接下来的反馈是基于默认参考答案生成的。[系统提示：基于默认通用答案的示范] 针对第1题，老师为您示范模范答案：“在录像中，我看到与《${cleanTheme}》相关的关键场景。主人公展现了良好的文明公德心。看到这一幕，我深受感动，觉得我们都应该向他学习。”您觉得这样表达是不是更清楚呢？`;
   } else if (turn === 3) {
-    return `[系统提示：基于默认通用答案的示范] 针对第2题，老师为您示范高分答案：“在日常生活中，我也遇到过相关的经历。有一次在学校，我和同学一起践行文明行为。经过大家的努力，事情圆满解决。这次经历让我体会到善举能带来积极的变化。”对于这些叙述技巧，你明白吗？`;
+    return `非常抱歉！由于系统技术故障或网络超时，因此老师无法为您提供个性化专属点评。接下来的反馈是基于默认参考答案生成的。[系统提示：基于默认通用答案的示范] 针对第2题，老师为您示范模范答案：“在日常生活中，我也遇到过相关的经历。有一次在学校，我和同学一起践行文明行为。经过大家的努力，事情圆满解决。这次经历让我体会到善举能带来积极的变化。”对于这些叙述技巧，你明白吗？`;
   } else if (turn === 4) {
-    return `[系统提示：基于默认通用答案的示范] 针对第3题，老师为您示范高分答案：“我完全同意‘关于${cleanTheme}，人人有责’这句话。首先，美好的环境依靠每个人的维护；其次，我们的文明言行能感染身边的人。”你听得出这样的答案更完整吗？`;
+    return `非常抱歉！由于系统技术故障或网络超时，因此老师无法为您提供个性化专属点评。接下来的反馈是基于默认参考答案生成的。[系统提示：基于默认通用答案的示范] 针对第3题，老师为您示范模范答案：“我完全同意‘关于${cleanTheme}，人人有责’这句话。首先，美好的环境依靠每个人的维护；其次，我们的文明言行能感染身边的人。”你听得出这样的答案更完整吗？`;
   } else {
-    return `[系统提示：基于默认通用答案的示范] 针对第4题，老师为您示范高分答案：“首先，学校可以通过宣导活动提高意识；其次，父母要以身作则；最后，社会媒体可以张贴海报。三管齐下，大家就能共同进步。”以上是指导建议，请点击下方按钮查看报告。`;
+    return `非常抱歉！由于系统技术故障或网络超时，因此老师无法为您提供个性化专属点评。接下来的反馈是基于默认参考答案生成的。[系统提示：基于默认通用答案的示范] 针对第4题，老师为您示范模范答案：“首先，学校可以通过宣导活动提高意识；其次，父母要以身作则；最后，社会媒体可以张贴海报。三管齐下，大家就能共同进步。”以上是指导建议，请点击下方按钮查看综合评估。`;
   }
 }
 
@@ -145,20 +145,20 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
 - 使用标准且亲切的新加坡华语，语气温和自然。绝对不要使用任何 Markdown 符号（不要有星号，不要加粗，不要用编号列表）。直接用自然段落流利说出。
 
 【示范答案 Important Principles】
-- 如果【学生口试实际转录文本】为空或缺失：你在 Turn 1 必须首先向学生诚恳致歉，说明系统未捕捉到作答，接下来的点评是基于通用高分范文给出的。
+- 如果【学生口试实际转录文本】为空或缺失：你在 Turn 1 必须首先向家长和学生诚恳致歉，说明系统未捕捉到作答，接下来的点评是基于通用模范答案给出的。
 - 模范示范答案绝对不能脱离学生的实际作答去编造无关经历。
 
 【反馈环节：当前是第 ${turn} 个对话回合（Turn ${turn}）】
 【第一回合 (Turn 1)：开场与感受】
-肯定学生。表扬3个优点。问学生：“你自己觉得刚才哪一题最难回答呢？”（问完立刻停止）。
+开场打招呼：“亲爱的家长和同学，你们好！”。肯定学生。表扬3个优点。问学生：“亲爱的家长和同学，你们觉得刚才哪一题最难回答呢？”（问完立刻停止）。
 【第二回合 (Turn 2)：改进与第一次示范】
-简短同理。针对最难的一题指出3个进步空间。为学生示范第1题高分答案。问学生：“听了老师的答案，你觉得可以把哪一个句子学起来呢？”（立刻停止）。
+简短同理。针对最难的一题指出3个进步空间。为学生示范第1题模范答案。问学生：“亲爱的家长和同学，听了老师的答案，你们觉得可以把哪一个句子学起来呢？”（立刻停止）。
 【第三回合 (Turn 3)：第二次示范】
-鼓励学生。针对第2题（个人经历）示范高分回答。问学生：“老师答案里有哪个词语你想记下来下次用呢？”（立刻停止）。
+鼓励学生。针对第2题（个人经历）示范模范回答。问学生：“亲爱的家长和同学，老师答案里有哪个词语你们想记下来下次用呢？”（立刻停止）。
 【第四回合 (Turn 4)：第三次示范】
-鼓励学生。针对第3题（个人看法）示范高分回答。问学生：“你听得出这样的答案里有哪个句子是下次可以试试的呢？”（立刻停止）。
+鼓励学生。针对第3题（个人看法）示范模范回答。问学生：“亲爱的家长和同学，你们听得出这样的答案里，有哪个句子是下次可以试试的呢？”（立刻停止）。
 【第五回合 (Turn 5)：第四次示范与收尾】
-鼓励学生。针对第4题（具体建议）示范高分回答。告诉学生可以参考评分报告：“今天我们就聊到这里，记得点击下载报告。加油！”（立刻停止）。
+鼓励学生。针对第4题（具体建议）示范模范回答。告诉学生可以参考评分报告：“亲爱的家长和同学，今天我们就聊到这里，老师看见同学的努力，希望你们也能看见自己的进步。记得点击下载报告。加油！”（立刻停止）。
     `;
 
     let contents = history.map((msg: any) => ({
@@ -416,7 +416,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>PSLE 华文模拟口试：林老师一对一口试辅导逐字稿 - ${cleanTheme || '看录像说话模拟'}</title>
+  <title>PSLE 华文模拟口试练习：AI 林老师一对一口试辅导逐字稿 - ${cleanTheme || '看录像说话'}</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; padding: 32px; color: #2D3748; background: #FDFCF8; max-width: 880px; margin: 0 auto; line-height: 1.6; }
     .header { border-bottom: 3px solid #7A8C70; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -445,9 +445,9 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
   </div>
   <div class="header">
     <div>
-      <h1>PSLE 华文模拟口试：林老师一对一口试辅导逐字稿</h1>
+      <h1>PSLE 华文模拟口试练习：AI 林老师一对一口试辅导逐字稿</h1>
       <div class="subtitle">
-        <span class="meta-badge">口试主题：${theme || '看录像说话模拟'}</span>
+        <span class="meta-badge">口试主题：${theme || '看录像说话'}</span>
         <span class="meta-badge">生成日期：${dateStr}</span>
       </div>
     </div>
@@ -456,7 +456,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
     ${chatItemsHtml}
   </div>
   <div class="footer">
-    感谢使用 PSLE 华文模拟口试 AI 智能辅导系统！
+    感谢使用 PSLE 华文模拟口试练习 AI 辅导系统！
   </div>
 </body>
 </html>`;
@@ -483,7 +483,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
             </button>
             <div className="flex items-center gap-2 text-natural-heading">
               <GraduationCap className="h-5 w-5 text-natural-sage" />
-              <span className="font-display font-bold text-sm tracking-wide">华文教师辅导</span>
+              <span className="font-display font-bold text-sm tracking-wide">AI 老师辅导</span>
             </div>
             <div className="hidden sm:block rounded-full bg-natural-sage/20 px-2 py-0.5 text-[10px] font-mono font-bold tracking-wide border border-natural-sage/30 text-natural-sage">
               一对一课堂
@@ -496,20 +496,20 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
               <div className={`relative h-28 w-28 rounded-full border-4 flex items-center justify-center shadow-md transition-all ${isTutorSpeaking ? 'border-natural-sage ring-4 ring-natural-sage/15 bg-white' : 'border-natural-border bg-white'}`}>
                 <div className="flex flex-col items-center justify-center">
                   <span className="font-display text-4xl font-bold text-natural-sage">林</span>
-                  <span className="text-[10px] text-natural-muted font-bold mt-1">华文导师</span>
+                  <span className="text-[10px] text-natural-muted font-bold mt-1">AI 华文老师</span>
                 </div>
                 {isTutorSpeaking && (
                   <div className="absolute -bottom-2 flex items-center gap-0.5 px-2.5 py-1 rounded-full bg-natural-sage text-white text-[9px] font-bold shadow-md">
                     <Volume2 className="h-3 w-3 animate-bounce" />
-                    <span>林老师朗读中</span>
+                    <span>AI 林老师朗读中</span>
                   </div>
                 )}
               </div>
             </div>
 
-            <h4 className="font-bold text-natural-heading text-sm">林老师 (Senior Chinese Tutor)</h4>
+            <h4 className="font-bold text-natural-heading text-sm">AI 林老师 (AI Teacher Lin)</h4>
             <p className="text-xs text-natural-muted leading-relaxed max-w-xs mt-1.5 font-semibold">
-              林老师正为您细心剖析刚刚的口试表现。她将口头示范四道考题的模范答案！
+              AI 林老师正为您细心剖析刚刚的口试表现。她将口头示范四道考题的模范答案！
             </p>
 
             {chatHistory.some(m => m.sender === 'tutor') && (
@@ -525,7 +525,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
                   }
                 }}
                 className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-natural-sage/15 hover:bg-natural-sage/25 text-natural-sage text-xs font-bold transition cursor-pointer border border-natural-sage/20"
-                title="重新播放林老师最新点评"
+                title="重新播放AI林老师最新点评"
               >
                 <Volume2 className="h-3.5 w-3.5" /><span>朗读最新点评语音</span>
               </button>
@@ -560,7 +560,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
           <div className="border-b border-natural-border px-5 py-4 flex items-center justify-between bg-natural-beige/30">
             <div className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4 text-natural-sage" />
-              <span className="text-sm font-bold text-natural-heading">林老师的辅导反馈实录</span>
+              <span className="text-sm font-bold text-natural-heading">AI 林老师的辅导反馈实录</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold text-natural-sage bg-natural-sage/10 px-2.5 py-0.5 rounded-full border border-natural-sage/20">
@@ -577,7 +577,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
                   <div className={`max-w-[85%] rounded-2xl px-4 py-3 shadow-sm ${isTutor ? 'bg-white border border-natural-border text-natural-text rounded-tl-none' : 'bg-natural-coral text-white rounded-tr-none border border-natural-coral/25'}`}>
                     <div className="flex justify-between items-center mb-1 gap-4">
                       <span className={`text-[10px] font-bold uppercase tracking-wider ${isTutor ? 'text-natural-sage' : 'text-[#FFF2E6]'}`}>
-                        {isTutor ? '林老师 (Tutor)' : '学生发言 (Student)'}
+                        {isTutor ? 'AI 林老师 (AI Teacher Lin)' : '家长和学生 (Parent & Student)'}
                       </span>
                       <div className="flex items-center gap-2">
                         {isTutor && (
@@ -616,7 +616,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
                     <div className="h-2 w-2 rounded-full bg-natural-sage animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="h-2 w-2 rounded-full bg-natural-sage animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[11px] text-natural-muted font-bold">林老师正在组织教学点评与高分示范答案...</span>
+                  <span className="text-[11px] text-natural-muted font-bold">AI 林老师正在组织教学点评与模范答案...</span>
                 </div>
               </div>
             )}
@@ -642,7 +642,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
 
               {chatHistory.length > 0 && (
                 <div className="pt-1.5">
-                  <button type="button" onClick={handleDownloadTranscript} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-natural-sage/15 hover:bg-natural-sage/25 text-natural-sage text-xs font-bold border border-natural-sage/30 transition shadow-xs cursor-pointer active:scale-95" title="下载林老师口试辅导对话逐字稿 (.html)">
+                  <button type="button" onClick={handleDownloadTranscript} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-natural-sage/15 hover:bg-natural-sage/25 text-natural-sage text-xs font-bold border border-natural-sage/30 transition shadow-xs cursor-pointer active:scale-95" title="下载AI林老师口试辅导对话逐字稿 (.html)">
                     <Download className="h-4 w-4 shrink-0" /><span>下载老师口试辅导逐字稿 (.html)</span>
                   </button>
                 </div>
@@ -650,7 +650,7 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
             </div>
 
             <form onSubmit={handleManualSend} className="flex gap-2">
-              <input type="text" value={textInput} onChange={(e) => setTextInput(e.target.value)} disabled={isLoading || isListening || isTranscribing} placeholder={isListening ? "语音录入中..." : isTranscribing ? "高精度转写中，请稍候..." : "在此输入您的回应并按回车..."} className="flex-1 rounded-xl border border-natural-border bg-white px-4 py-3 text-xs sm:text-sm focus:border-natural-sage focus:outline-none focus:ring-4 focus:ring-natural-sage/20 transition-all font-medium text-natural-text" />
+              <input type="text" value={textInput} onChange={(e) => setTextInput(e.target.value)} disabled={isLoading || isListening || isTranscribing} placeholder={isListening ? "语音录入中..." : isTranscribing ? "高精度转写中，请稍候..." : "在此输入您的回应并按 Enter..."} className="flex-1 rounded-xl border border-natural-border bg-white px-4 py-3 text-xs sm:text-sm focus:border-natural-sage focus:outline-none focus:ring-4 focus:ring-natural-sage/20 transition-all font-medium text-natural-text" />
               <button type="submit" disabled={!textInput.trim() || isLoading || isListening || isTranscribing} className="h-11 w-11 rounded-xl bg-natural-heading text-white hover:bg-[#433D39] disabled:bg-natural-border disabled:text-natural-muted flex items-center justify-center transition shrink-0 shadow-sm cursor-pointer">
                 <Send className="h-4 w-4" />
               </button>
@@ -666,9 +666,9 @@ ${examTranscript || '（学生尚未作答或使用极简短回答）'}
               <div className="pt-3 border-t border-natural-border text-center">
                 <button type="button" onClick={onFinishedFeedback} disabled={isGeneratingReport} className="inline-flex items-center gap-2 rounded-xl bg-natural-sage hover:bg-[#5E6D55] text-white px-6 py-3.5 text-xs sm:text-sm font-bold shadow-md transition-all transform active:scale-[0.99] cursor-pointer disabled:opacity-80 disabled:cursor-wait">
                   {isGeneratingReport ? (
-                    <><Sparkles className="h-4 w-4 animate-spin text-white" /><span>正在为您生成模拟口试详细成绩报告，请稍候...</span></>
+                    <><Sparkles className="h-4 w-4 animate-spin text-white" /><span>正在为您生成模拟口试练习综合评估，请稍候...</span></>
                   ) : (
-                    <><span>辅导已结束：查看我的模拟口试详细成绩报告</span><ChevronRight className="h-4 w-4" /></>
+                    <><span>辅导已结束：查看我的模拟口试练习综合评估</span><ChevronRight className="h-4 w-4" /></>
                   )}
                 </button>
               </div>

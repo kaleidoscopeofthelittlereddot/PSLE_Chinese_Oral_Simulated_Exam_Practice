@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PSLE 华文模拟口试练习</title>
+
+    <script>
+    // If the ticket is missing, instantly redirect to the main page
+    if (localStorage.getItem('legalConsent') !== 'granted') {
+        window.location.href = '/'; 
+    }
+    </script>
+
   </head>
   <body>
     <div id="root"></div>

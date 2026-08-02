@@ -1,0 +1,41 @@
+Privacy Policy for PSLE 华文模拟口试练习 
+Last Updated: 1 August 2026
+
+1. Introduction
+[PSLE 华文模拟口试练习] ("we", "our", or "the App") is an educational tool designed to help students practice for the PSLE Chinese Oral Examination. This Privacy Policy explains how we handle user information, specifically focusing on the data of minors.
+
+2. Parental Consent
+This App is intended for use by children preparing for the PSLE. However, the setup and operation of the App require the direct involvement and consent of a parent or legal guardian. By entering an API key and allowing your child to use the App, you consent to the collection and processing of their voice data as described below.
+
+3. Bring Your Own Key (BYOK) Model
+[PSLE 华文模拟口试练习] operates entirely on a Bring Your Own Key (BYOK) model.
+
+We do not provide the artificial intelligence engine.
+
+Your API key is stored locally on your device (in your browser's local storage).
+
+We do not have access to your API key, and it is never transmitted to any servers owned or operated by [App Name].
+
+4. Data Collection and Processing (Voice Data)
+When a student uses the App to answer oral scenarios:
+
+What is collected: The App accesses the device’s microphone to record the student's spoken answers.
+
+Where it goes: Because of the BYOK model, this voice data (or its text transcription) is sent directly from your browser to Google’s servers via your personal Gemini API key.
+
+Our access: [PSLE 华文模拟口试练习] does not intercept, store, save, or analyze these audio recordings on our own servers. We have no access to your child's voice data or the generated transcripts.
+
+5. Third-Party Services
+Because the App connects directly to Google via your API key, the processing of voice data and generation of feedback is governed entirely by Google’s Terms of Service and Privacy Policy. We strongly advise parents to review Google’s policies regarding the processing of data through their API services.
+
+6. Data Retention and Deletion
+
+On our App: You can remove your API key and clear any local session data at any time by clicking the [Reset API Key] button on the main page.
+
+On Google's Servers: Data retention is managed according to the settings of the Google Cloud account associated with the API key you provided.
+
+7. Changes to This Policy
+We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.
+
+8. Support and Contact
+This application is provided "as-is" as a completed, standalone project, and no technical support is provided. Because this App operates entirely on a local, Bring Your Own Key (BYOK) model and we do not collect, store, or have access to any personal data, we do not maintain a data protection contact channel. All data processing is governed by your direct relationship with Google via your API key.

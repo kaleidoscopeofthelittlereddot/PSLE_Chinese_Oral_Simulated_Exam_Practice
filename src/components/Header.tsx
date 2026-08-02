@@ -25,7 +25,7 @@ export default function Header({ examState, theme }: HeaderProps) {
                 </span>
               </h1>
               <p className="text-[10.5px] font-semibold text-natural-muted tracking-wide font-sans uppercase">
-                PSLE Chinese Oral Simulated Exam Practice
+                PSLE Chinese Oral Practice Simulator
               </p>
             </div>
           </div>

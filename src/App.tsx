@@ -79,16 +79,24 @@ export default function App() {
     }
   }, []);
 
+  // Auto-save active session state changes to localStorage (excluding heavy audio binary payloads)
   useEffect(() => {
     if (examState === 'setup') {
       localStorage.removeItem('psle_oral_active_session');
       return;
     }
     try {
+      // Strip out heavy audio payloads (audioBase64 & audioUrl) to fit safely within localStorage quota (5MB)
+      // Note: Full audio recordings are persistently stored in IndexedDB (audioBackupDB)
+      const sanitizedHistory = chatHistory.map((msg) => {
+        const { audioBase64, audioUrl, ...rest } = msg;
+        return rest;
+      });
+
       const sessionToSave = {
         examState,
         config,
-        chatHistory,
+        chatHistory: sanitizedHistory,
         currentQuestionIndex,
         report,
         timestamp: Date.now(),
@@ -285,31 +293,32 @@ JSON 必须包含以下结构：
     }
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col font-sans selection:bg-blue-500/10 selection:text-moe-blue">
+return (
+    <div className="min-h-screen bg-[#FDFBF7] flex flex-col selection:bg-[#518DD1]/20 selection:text-[#3A322A]" style={{ fontFamily: 'Georgia, "Kaiti", "KaiTi", "STKaiti", "楷体", serif' }}>
       {/* BYOK Modal */}
       {isKeyModalOpen && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Enter Gemini API Key</h2>
-            <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-              <span className="block mb-2">使用此华文模拟口试系统，</span>
+        <div className="fixed inset-0 bg-[#3A322A]/60 flex items-center justify-center z-[100] backdrop-blur-sm">
+          <div className="bg-[#FFFFFF] p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 border border-[#3A322A]/10">
+            <h2 className="text-2xl font-bold text-[#3A322A] mb-2">PSLE 华文模拟口试练习</h2>
+            <p className="text-sm text-[#554C43] mb-6 leading-relaxed">
+
               <span className="block mb-2">请提供您的 Google Gemini API Key。该密钥将安全地保存在您的本地浏览器中。首页末端可以随时重置 API Key。</span>
-              <span className="block text-xs text-gray-500">Please paste your personal Google Gemini API Key here.</span>
-              <span className="block text-xs text-gray-500">Your API Key will only be stored in your local browser cache. <br /> Reset API Key button is at the footer of the main page.</span>
+              <span className="block mb-2 text-xs text-[#857d75]"><strong>Please paste your personal Google Gemini API Key here.</strong></span>
+              <span className="block mb-2 text-xs text-[#857d75]">Your API Key will only be stored in your local browser cache.</span>
+              <span className="block text-[0.6rem] text-[#857d75]"><strong>Clear API Key</strong> button is at the footer of the app. If you are using a shared device, please ensure you click 'Clear API Key' when you are finished practicing to remove your key from this browser.</span>
             </p>
             <div className="relative mb-6">
               <input 
                 type={showApiKey ? "text" : "password"} 
                 id="api-key-input"
                 placeholder="AIzaSy..." 
-                className="w-full border border-gray-300 p-3 pr-12 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition font-mono text-sm"
+                className="w-full border border-[#3A322A]/20 p-3 pr-12 rounded-lg focus:ring-2 focus:ring-[#518DD1] outline-none transition font-mono text-sm bg-[#f2f4f4]"
                 autoComplete="off"
               />
               <button
                 type="button"
                 onClick={() => setShowApiKey(!showApiKey)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#554C43] hover:text-[#E25858] transition cursor-pointer"
                 title={showApiKey ? "隐藏密钥 (Hide Key)" : "显示密钥 (Show Key)"}
               >
                 {showApiKey ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -317,10 +326,12 @@ JSON 必须包含以下结构：
             </div>
             <button 
               onClick={handleSaveKey}
-              className="bg-blue-600 text-white w-full py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-md"
+              className="bg-[#518DD1] text-white w-full py-3 rounded-lg font-bold hover:bg-[#F0B243] transition-all duration-300 shadow-[0_4px_15px_rgba(226,88,88,0.2)] hover:shadow-[0_6px_20px_rgba(226,88,88,0.3)] hover:-translate-y-[1px]"
             >
               保存并开始 (Save & Start)
             </button>
+
+<span className="block my-2 text-center text-[0.45rem]">By saving your key, you confirm you are a parent/guardian and agree to our Terms of Use and Privacy Policy.</span>
           </div>
         </div>
       )}
@@ -379,9 +390,9 @@ JSON 必须包含以下结构：
                   <CheckCircle className="h-10 w-10" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-display font-bold text-gray-900 tracking-tight">恭喜您完成华文口试模拟！</h3>
+                  <h3 className="text-2xl font-display font-bold text-gray-900 tracking-tight">恭喜您完成华文口试模拟练习！</h3>
                   <p className="text-xs sm:text-sm text-gray-500 leading-relaxed font-medium">
-                    您已经顺利回答完了考官的四道问题。现在，您可以选择立即查看您的详细模拟口试成绩报告，或者开启林老师的一对一语音点评辅导。
+                    您已经顺利回答完了考官的四道问题。现在，您可以选择立即查看您的详细模拟口试练习综合评估，或者开启林老师的一对一语音点评辅导。
                   </p>
                 </div>
 
@@ -389,13 +400,13 @@ JSON 必须包含以下结构：
                   <button onClick={handleStartFeedback} disabled={isGeneratingReport} className="flex flex-col items-center justify-center p-6 border border-emerald-100 rounded-2xl text-left bg-emerald-50/20 hover:bg-emerald-50/50 transition duration-300 group shadow-sm disabled:opacity-50">
                     <GraduationCap className="h-8 w-8 text-emerald-600 mb-3 group-hover:scale-110 transition duration-300" />
                     <span className="font-bold text-sm text-gray-900">开启林老师语音点评</span>
-                    <span className="text-[10px] text-gray-500 mt-1 font-medium text-center">逐题获得林老师的口头指导与新加坡高分模范答案示范。</span>
+                    <span className="text-[10px] text-gray-500 mt-1 font-medium text-center">获得林老师逐题的口头指导与模范答案示范。</span>
                   </button>
 
                   <button onClick={handleGenerateReport} disabled={isGeneratingReport} className="flex flex-col items-center justify-center p-6 border border-blue-100 rounded-2xl text-left bg-blue-50/20 hover:bg-blue-50/50 transition duration-300 group shadow-sm disabled:opacity-50">
                     <Award className="h-8 w-8 text-moe-blue mb-3 group-hover:scale-110 transition duration-300" />
-                    <span className="font-bold text-sm text-gray-900">查看详尽模拟口试报告</span>
-                    <span className="text-[10px] text-gray-500 mt-1 font-medium text-center">获得30分制评分，细化分析答题要点，列出3个亮点与3个提升空间。</span>
+                    <span className="font-bold text-sm text-gray-900">查看详细模拟口试练习综合评估</span>
+                    <span className="text-[10px] text-gray-500 mt-1 font-medium text-center">详细分析答题要点，列出3个亮点与3个改进建议。</span>
                   </button>
                 </div>
 
@@ -464,7 +475,18 @@ JSON 必须包含以下结构：
         <a href="../index.html#disclaimer" className="mt-2 text-[11px] text-gray-400 hover:text-red-500 underline transition">
       <strong>条款与免责声明 Terms & Disclaimer</strong>
     </a>
-
+	<div style={{ fontSize: '0.7rem', color: '#857d75', textAlign: 'center', marginTop: '20px', lineHeight: 1.6 }}>
+  <button 
+    type="button"
+    onClick={() => {
+      localStorage.removeItem('user_gemini_api_key');
+      window.location.reload();
+    }} 
+    className="inline-flex items-center justify-center gap-2 rounded-xl bg-transparent hover:bg-[#518DD1] px-4 py-2 text-[0.5rem] font-bold text-[#3A322A] hover:text-white border border-[#3A322A]/30 hover:border-[#518DD1] shadow-sm focus:outline-none transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] cursor-pointer"
+  >
+    Clear API Key | 清除 API 密钥 
+  </button>
+</div>
   </div>
 </footer>
 

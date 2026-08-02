@@ -664,7 +664,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
                 </button>
               )}
               <div className="rounded-full bg-natural-sage/20 px-2 py-0.5 text-[10px] font-mono font-bold tracking-wide border border-natural-sage/30 text-natural-sage">
-                陈考官 live
+                虚拟考官 live
               </div>
             </div>
           </div>
@@ -695,12 +695,12 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
                       </div>
                     )}
                   </div>
-                  <h3 className="text-white font-bold text-sm sm:text-base">陈主考官 (PSLE 华文考官)</h3>
+                  <h3 className="text-white font-bold text-sm sm:text-base">陈老师 (虚拟考官)</h3>
                   <p className="text-stone-400 text-xs mt-1 max-w-sm">
                     {isExaminerSpeaking ? '正在对您提问，请仔细倾听考官音频...' : isListening ? '考官正在专注倾听您的作答...' : '考官准备就绪，点击右侧麦克风按钮开始作答'}
                   </p>
                   <p className="text-[10px] text-stone-500 mt-2">
-                    💡 提示：如需使用定制考官真人视频，可点击下方按钮上传 MP4 视频文件。
+                    💡 提示：如需使用定制虚拟考官视频，可点击下方按钮上传 MP4 视频文件。
                   </p>
                 </div>
               ) : (
@@ -735,7 +735,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
               </div>
               <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-white px-3 py-1 rounded-md border border-white/10 flex items-center gap-2">
                 <UserCheck className="h-3.5 w-3.5 text-amber-400" />
-                <span className="text-xs font-bold">陈考官</span>
+                <span className="text-xs font-bold">陈老师 （虚拟考官）</span>
               </div>
               <input type="file" ref={examinerFileInputRef} accept="video/*" onChange={(e) => handleExaminerVideoUpload(e, false)} className="hidden" />
               <input type="file" ref={examinerTalkingFileInputRef} accept="video/*" onChange={(e) => handleExaminerVideoUpload(e, true)} className="hidden" />
@@ -743,7 +743,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
 
             <div className="text-center mt-3 space-y-0.5 max-w-xs">
               <p className="text-[11px] text-stone-300 leading-relaxed font-medium">
-                考官提问时将播放<b>说话循环视频</b>，学生回答时将自动切换为<b>倾听循环视频</b>（音效由 TTS 播报）。
+                虚拟考官提问时将播放<b>说话循环视频</b>，学生回答时将自动切换为<b>倾听循环视频</b>（音效由 TTS 播报）。
               </p>
             </div>
 
@@ -882,7 +882,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
                     <div className="h-2 w-2 rounded-full bg-natural-sage animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="h-2 w-2 rounded-full bg-natural-sage animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[11px] text-natural-muted font-bold">考官正在倾听并思索下一个提问...</span>
+                  <span className="text-[11px] text-natural-muted font-bold">虚拟考官正在倾听并思索下一个提问...</span>
                 </div>
               </div>
             )}
@@ -906,7 +906,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
                 ) : (
                   <div className="flex items-center gap-2 text-natural-muted font-normal">
                     <Clock className="h-3.5 w-3.5 text-natural-muted" />
-                    <span className="font-sans text-[11px]">{isExaminerSpeaking ? '考官提问讲话中...' : '准备就绪，待命提问'}</span>
+                    <span className="font-sans text-[11px]">{isExaminerSpeaking ? '虚拟考官提问讲话中...' : '准备就绪，待命提问'}</span>
                   </div>
                 )}
               </div>
@@ -930,7 +930,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
             </div>
 
             <form onSubmit={handleManualSend} className="flex gap-2 items-center">
-              <input type="text" value={textInput} onChange={(e) => setTextInput(e.target.value)} disabled={isLoadingResponse || isListening || isTranscribing} placeholder={isListening ? "语音录入中..." : isTranscribing ? "高精度转写中，请稍候..." : "无法语音作答？可在此处输入中文作答并按回车..."} className="flex-1 rounded-xl border border-natural-border bg-white px-4 py-3 text-xs sm:text-sm focus:border-natural-sage focus:outline-none focus:ring-4 focus:ring-natural-sage/20 transition-all font-medium text-natural-text" />
+              <input type="text" value={textInput} onChange={(e) => setTextInput(e.target.value)} disabled={isLoadingResponse || isListening || isTranscribing} placeholder={isListening ? "语音录入中..." : isTranscribing ? "高精度转写中，请稍候..." : "无法语音作答？可在此处输入中文作答并按 Enter..."} className="flex-1 rounded-xl border border-natural-border bg-white px-4 py-3 text-xs sm:text-sm focus:border-natural-sage focus:outline-none focus:ring-4 focus:ring-natural-sage/20 transition-all font-medium text-natural-text" />
               <button type="submit" disabled={!textInput.trim() || isLoadingResponse || isListening || isTranscribing} className="h-11 w-11 rounded-xl bg-natural-heading text-white hover:bg-[#433D39] disabled:bg-natural-border disabled:text-natural-muted flex items-center justify-center transition shrink-0 shadow-sm cursor-pointer">
                 <Send className="h-4 w-4" />
               </button>
@@ -947,10 +947,10 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
               <div className="pt-3 border-t border-natural-border space-y-2.5 text-center">
                 <button type="button" onClick={handleBatchExportAudios} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white px-5 py-3 text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-[0.99] cursor-pointer">
                   <Download className="h-4 w-4" />
-                  <span>下载全部 4 段口试答题录音 (Download All 4 Recorded Audios)</span>
+                  <span>下载全部 4 段模拟口试练习答题录音 (Download All 4 Recorded Audios)</span>
                 </button>
                 <button type="button" onClick={() => { stopSpeaking(); onExamCompleted(); }} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-natural-sage hover:bg-[#5E6D55] text-white px-6 py-3.5 text-xs sm:text-sm font-bold shadow-md transition-all transform active:scale-[0.99] cursor-pointer">
-                  <span>口试已完成：提交并生成评估报告与林老师辅导</span>
+                  <span>模拟口试练习已完成：提交并生成综合评估与林老师辅导</span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
