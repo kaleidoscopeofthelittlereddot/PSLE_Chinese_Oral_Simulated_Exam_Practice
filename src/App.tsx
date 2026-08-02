@@ -302,10 +302,10 @@ return (
             <h2 className="text-2xl font-bold text-[#3A322A] mb-2">PSLE 华文模拟口试练习</h2>
             <p className="text-sm text-[#554C43] mb-6 leading-relaxed">
 
-              <span className="block mb-2">请提供您的 Google Gemini API Key。该密钥将安全地保存在您的本地浏览器中。首页末端可以随时重置 API Key。</span>
+              <span className="block mb-2">请输入您的 Google Gemini API Key。该密钥将保存在您的本地浏览器中。练习完毕后，建议利用网页末端的【清除 API Key】按钮，清除浏览器里的密钥资料。</span>
               <span className="block mb-2 text-xs text-[#857d75]"><strong>Please paste your personal Google Gemini API Key here.</strong></span>
-              <span className="block mb-2 text-xs text-[#857d75]">Your API Key will only be stored in your local browser cache.</span>
-              <span className="block text-[0.6rem] text-[#857d75]"><strong>Clear API Key</strong> button is at the footer of the app. If you are using a shared device, please ensure you click 'Clear API Key' when you are finished practicing to remove your key from this browser.</span>
+              <span className="block mb-2 text-xs text-[#857d75]">Your API Key will only be stored in your local browser storage.</span>
+              <span className="block text-[0.6rem] text-[#857d75]"><strong>Clear API Key</strong> button is at the footer of the app. It is recommended to click 'Clear API Key' when you have finished practicing to remove your key from this browser.</span>
             </p>
             <div className="relative mb-6">
               <input 
