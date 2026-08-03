@@ -71,8 +71,8 @@ export default function OralExamSession({
   const [isMuted, setIsMuted] = useState(false);
   
   // Examiner Video Feed State
-  const DEFAULT_LISTENING_VIDEO_URL = 'https://player.vimeo.com/video/1213804130';
-  const DEFAULT_TALKING_VIDEO_URL = 'https://player.vimeo.com/video/1213804129';
+  const DEFAULT_LISTENING_VIDEO_URL = '../Female_Listening_Examiner.mp4';
+  const DEFAULT_TALKING_VIDEO_URL = '../Female_Speaking_Examiner.mp4';
 
   const [examinerVideoUrl, setExaminerVideoUrl] = useState<string>(() => {
     return localStorage.getItem('custom_examiner_video_url') || DEFAULT_LISTENING_VIDEO_URL;

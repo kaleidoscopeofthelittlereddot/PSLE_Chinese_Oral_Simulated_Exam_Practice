@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaleidoscope of the Little Red Dot</title>
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <style>
         /* Color Palette Extracted from 1000116420.jpg */
         :root {
@@ -111,8 +114,6 @@
             flex: 1;
             background-color: var(--white-card);
             border-radius: 8px;
-            height: 220px;
-            min-height: 220px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -354,8 +355,6 @@ code {
             
             .feature-img-container {
                 width: 100%;
-                height: 250px;
-                min-height: 250px;
             }
             
             h1 { font-size: 2rem; }
@@ -416,7 +415,7 @@ code {
                     <h2>AI Simulated Examiner View | Download Audio Files <br /><span class="zh">虚拟考官模式 | 下载学生回答录音</span></h2>
                     <p>Our AI simulated examiner view mimics exam conditions, helping your child build confidence and reduce actual exam-day anxiety. At the end of the session, you can download the audio recordings of your child's answers for thorough review.</p>
 		<p style="font-size: 0.75rem; color: #857d75; text-align: left; margin-top: 30px; line-height: 1.6;">
-   		If the microphone function is not used, you can also type in your child's answers for submission and analysis.</p>
+   		A default female examiner view will be used. You can change your system Text-to-speech (TTS) voice setting if needed. If the microphone function is not used, you can also type in your child's answers for submission and analysis.</p>
                 </div>
             </div>
 
@@ -456,13 +455,16 @@ code {
     <h2>How to Use <br /><span class="zh" style="font-size: 1.6rem; color: var(--accent-green); margin-left: 10px;">使用指南</span></h2>
     
     <ol class="steps-list">
+	<p style="text-align: center; font-size: 0.8rem; color: #518DD1;"><strong>For the best experience, please use this web app on a computer. </strong></p>
         <li>
             <strong>Create a Google Gemini API Key (Required):</strong> 
             You can create your <code>personal Gemini API Key</code> by logging into 
             <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a>.
             
             <div class="info-alert">
-                Due to the use of AI to analyse the submitted answers, using a Default Gemini API Key from the free tier may face usage limits during analysis, leading to failure in generating the customised feedback and written reports. Surges in API requests may also cause server time-out. You can use a free tier Gemini API Key to explore the app. However, Google's Free Tier API may log and human-review prompts and responses for product improvement. To ensure complete privacy for your child's voice data and experience the full features of the app, it is strongly recommended to use a Paid Tier key (Pay-per-request) where Google does not retain or review your data. You may also turn off the auto-reload function of your Google Cloud credits to ensure that no accidental overspending may incur. Please monitor your Google Cloud console. You are fully responsible for any charges on your account.
+                Due to the use of AI to analyse the submitted answers, using a Default Gemini API Key from the free tier may face usage limits during analysis, leading to failure in generating the customised feedback and written reports. In addition, Google's Free Tier API may log and human-review prompts and responses for product improvement. To ensure complete privacy for your child's voice data and experience the full features of the app, it is strongly recommended to use a Paid Tier key (Pay-per-request) where Google does not retain or review your data. You may also turn off the auto-reload function of your Google Cloud credits to ensure that no accidental overspending may incur. Please monitor your Google Cloud console. You are fully responsible for any charges on your account. Please note that surges in API requests to Gemini may also cause server time-out. 
+	    
+	    <p style="color: #518DD1;">You can input a random number as your API Key if you only want to explore the user interface without accessing the AI features.</p>
             </div>
             
             <p class="cost-estimate">
@@ -471,7 +473,7 @@ code {
         </li>
         <li>
             <strong>Regarding your API Key:</strong> 
-            Your <code>personal Gemini API Key</code> will be stored locally in your browser cache. There is also a reset API Key button at the footer of the App whenever you want to clear the stored API Key data.
+            Your <code>personal Gemini API Key</code> will be stored locally in your browser cache. There is also a [Clear API Key] button at the footer of the App whenever you want to clear the stored API Key data. It is recommended to clear your API Key information from your browser when you have finished using the app, especially if you are using a shared device.
         </li>
         <li>
             <strong>Privacy Concerns with Google Gemini:</strong> 

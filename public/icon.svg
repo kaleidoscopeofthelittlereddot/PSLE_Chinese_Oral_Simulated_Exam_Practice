@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#FFFDF7" rx="112"/>
+  
+  <!-- Outer circular border to mimic the original logo ring -->
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#F4CDCD" stroke-width="8"/>
+  
+  <!-- Rainbow Arches (center at 256, 310) -->
+  <path d="M 66 310 A 190 190 0 0 1 446 310" fill="none" stroke="#EF5350" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 91 310 A 165 165 0 0 1 421 310" fill="none" stroke="#FF9800" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 116 310 A 140 140 0 0 1 396 310" fill="none" stroke="#FFCA28" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 141 310 A 115 115 0 0 1 371 310" fill="none" stroke="#66BB6A" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 166 310 A 90 90 0 0 1 346 310" fill="none" stroke="#42A5F5" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 191 310 A 65 65 0 0 1 321 310" fill="none" stroke="#AB47BC" stroke-width="20" stroke-linecap="round"/>
+
+  <!-- Kaleidoscope Center -->
+  <circle cx="256" cy="310" r="48" fill="#FFFFFF" stroke="#6D4C41" stroke-width="5"/>
+  
+  <!-- Colorful inner pie slices -->
+  <path d="M 256 310 L 222 276 A 48 48 0 0 1 290 276 Z" fill="#FFCA28"/>
+  <path d="M 256 310 L 290 344 A 48 48 0 0 1 222 344 Z" fill="#66BB6A"/>
+  <path d="M 256 310 L 210 328 A 48 48 0 0 1 210 292 Z" fill="#42A5F5"/>
+  <path d="M 256 310 L 302 292 A 48 48 0 0 1 302 328 Z" fill="#EF5350"/>
+  
+  <!-- The Little Red Dot inside kaleidoscope -->
+  <circle cx="256" cy="310" r="22" fill="#FFFFFF" stroke="#6D4C41" stroke-width="4"/>
+  <circle cx="256" cy="310" r="10" fill="#D32F2F"/>
+  
+  <!-- Stylized Colorful Text Arc (Circles to represent playful text curve) -->
+  <circle cx="110" cy="400" r="8" fill="#EF5350"/>
+  <circle cx="140" cy="420" r="9" fill="#42A5F5"/>
+  <circle cx="175" cy="435" r="7" fill="#66BB6A"/>
+  <circle cx="215" cy="445" r="9" fill="#EF5350"/>
+  <circle cx="256" cy="448" r="8" fill="#FF9800"/>
+  <circle cx="297" cy="445" r="9" fill="#66BB6A"/>
+  <circle cx="337" cy="435" r="8" fill="#FFCA28"/>
+  <circle cx="372" cy="420" r="7" fill="#AB47BC"/>
+  <circle cx="402" cy="400" r="9" fill="#EF5350"/>
+
+</svg>
