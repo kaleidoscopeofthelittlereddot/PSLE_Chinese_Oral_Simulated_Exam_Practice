@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Volume2, VolumeX, Send, ArrowRight, ChevronRight, UserCheck, MessageSquare, AlertCircle, Sparkles, Languages, Download, FileAudio, Upload, RotateCcw, Video, Clock } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Send, ArrowRight, ChevronRight, UserCheck, MessageSquare, AlertCircle, Sparkles, Languages, Download, FileAudio, FileText, Upload, RotateCcw, Video, Clock } from 'lucide-react';
 import { ExamConfig, ChatMessage } from '../types';
 import { speakChineseText, stopSpeaking, ChineseSpeechRecognizer } from '../lib/speech';
 import { saveAudioBackup } from '../lib/audioBackupDB';
@@ -244,9 +244,9 @@ export default function OralExamSession({
   const getFallbackQuestionText = (qIndex: number, theme: string) => {
     const cleanTheme = theme || '保持环境清洁';
     if (qIndex === 1) return `现在我们进入看录像说话的环节，请你看录像。说一说你在这个录像中看到的事情。`;
-    if (qIndex === 2) return `在日常生活或学校里，你有没有和“${cleanTheme}”相关的经验？请和考官说一说。`;
-    if (qIndex === 3) return `你同意“${cleanTheme}，人人有责”这句话吗？为什么？`;
-    if (qIndex === 4) return `为了让大家养成“${cleanTheme}”的好习惯，你有什么切实可行的好建议吗？`;
+    if (qIndex === 2) return `在日常生活里，你有没有和“${cleanTheme}”相关的经验？请和考官说一说。`;
+    if (qIndex === 3) return `有些人觉得“${cleanTheme}”和小学生没有关系，你赞同吗？为什么？`;
+    if (qIndex === 4) return `针对“${cleanTheme}”这个主题，我们可以怎样帮助大家养成好习惯呢？`;
     return `谢谢你，今天的口试就到这里结束。`;
   };
 
@@ -362,6 +362,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
       alert('暂未检测到录制的口试答题音频文件。');
       return;
     }
+
     studentMessages.forEach((msg, idx) => {
       setTimeout(() => {
         const qNum = msg.questionNumber || idx + 1;
@@ -370,6 +371,71 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
       }, idx * 600);
     });
   };
+
+// Export Student Transcript & Gemini Prompt TXT file
+const handleDownloadGeminiPrompt = () => {
+  const cleanTheme = config.theme.replace(/^主题\s*\d+[:：\s]*/i, '').trim() || config.theme;
+
+  const getExaminerQuestionForQ = (qNum: number): string => {
+    if (chatHistory && chatHistory.length > 0) {
+      const tagged = chatHistory.find(m => m.sender === 'examiner' && m.questionNumber === qNum);
+      if (tagged && tagged.text) return tagged.text;
+
+      const examinerMsgs = chatHistory.filter(m => m.sender === 'examiner' && (m.questionNumber === undefined || m.questionNumber <= 4));
+      if (examinerMsgs[qNum - 1]?.text) {
+        return examinerMsgs[qNum - 1].text;
+      }
+    }
+    const fallbackQuestions: Record<number, string> = {
+      1: `在录像中，你看到了什么？看到那一幕，你有什么感受？`,
+      2: `你在生活中有没有遇到过类似的情况？请和我们分享一下你的经历和当时的感想。`,
+      3: `你认为我们应该如何提高大家的意识或推广这种文明行为？`,
+      4: `学校或社区还可以采取哪些具体有效措施来改进这个问题？`,
+    };
+    return fallbackQuestions[qNum] || `关于“${cleanTheme}”的口试问题。`;
+  };
+
+  const getStudentAnswerForQ = (qNum: number) => {
+    if (!chatHistory) return null;
+    return chatHistory.find(m => m.sender === 'student' && m.questionNumber === qNum);
+  };
+
+  const studentTranscripts = [1, 2, 3, 4].map(num => {
+    const qText = getExaminerQuestionForQ(num);
+    const msg = getStudentAnswerForQ(num);
+    const answerText = msg?.text || '';
+    const hasAudio = !!msg?.audioUrl;
+    return `【考官第 ${num} 题提问】：${qText}\n【学生第 ${num} 题作答】：${answerText || (hasAudio ? '（详见随附的第 ' + num + ' 题录音文件）' : '（未检测到作答）')}`;
+  }).join('\n\n');
+
+  const promptText = `你是一位经验丰富的新加坡教育部 (MOE) PSLE 华文口试特级考官。
+请根据以下 PSLE 华文看录像说话评分细则（满分 30分：拆分为 4 维分值——语音与声调 8分、表达流利度 8分、内容充实 8分、词汇与句型 6分），对我的学生作答（文字原稿及随附的各题录音音频文件）提供严谨专业的评测与辅导：
+
+【口试主题】：${cleanTheme}
+
+【考官提问与学生作答内容】：
+${studentTranscripts}
+
+【评估与辅导要求】：
+1. 预估总得分（0 - 30分），并根据 4 维细则拆解：语音与声调(8分)、表达流利度(8分)、内容充实(8分)、词汇与句型(6分)。
+2. 在“语音与声调”、“表达流利度”、“内容充实”、“词汇与句型”四个维度给出详细诊断与指导，包含特定发音/声调偏误表及思考填充词（如“那个”、“呃”）统计。
+3. 针对 Q1 - Q4 逐题剖析学生作答中的亮点与不足。
+4. 指出 3 个最亮眼的优势，以及 3 个最关键的提升建议（附新加坡高频词汇与连词替换建议）。
+5. 针对 Q1 - Q4 提供 4 道题目的 MOE 标准满分示范答案。`;
+
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const fileName = `学生回答逐字稿_${cleanTheme}_${dateStr}.txt`;
+
+  const blob = new Blob([promptText], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
 
   const handleStudentSubmit = async (answerText: string, audioUrl?: string, audioMimeType?: string, audioBase64?: string) => {
     if (!answerText.trim() || isLoadingResponse) return;
@@ -945,12 +1011,35 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
 
             {isExamEnded && (
               <div className="pt-3 border-t border-natural-border space-y-2.5 text-center">
-                <button type="button" onClick={handleBatchExportAudios} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white px-5 py-3 text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-[0.99] cursor-pointer">
+                <button
+                  type="button"
+                  onClick={handleBatchExportAudios}
+                  style={{ backgroundColor: '#518DD1' }}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl text-white px-5 py-3 text-xs sm:text-sm font-bold shadow-sm transition-all hover:opacity-90 active:scale-[0.99] cursor-pointer"
+                >
                   <Download className="h-4 w-4" />
-                  <span>下载全部 4 段模拟口试练习答题录音 (Download All 4 Recorded Audios)</span>
+                  <span>下载全部 4 段口试答题录音 (Download All 4 Recorded Audios)</span>
                 </button>
-                <button type="button" onClick={() => { stopSpeaking(); onExamCompleted(); }} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-natural-sage hover:bg-[#5E6D55] text-white px-6 py-3.5 text-xs sm:text-sm font-bold shadow-md transition-all transform active:scale-[0.99] cursor-pointer">
-                  <span>模拟口试练习已完成：提交并生成综合评估与林老师辅导</span>
+
+                <button
+                  type="button"
+                  onClick={handleDownloadGeminiPrompt}
+                  style={{ backgroundColor: '#F0B243' }}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl text-white px-5 py-3 text-xs sm:text-sm font-bold shadow-sm transition-all hover:opacity-90 active:scale-[0.99] cursor-pointer"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>下载学生回答逐字稿与评测 Prompt (.txt)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopSpeaking();
+                    onExamCompleted();
+                  }}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-natural-sage hover:bg-[#5E6D55] text-white px-6 py-3.5 text-xs sm:text-sm font-bold shadow-md transition-all transform active:scale-[0.99] cursor-pointer"
+                >
+                  <span>口试已完成：提交并生成评估报告与林老师辅导</span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
