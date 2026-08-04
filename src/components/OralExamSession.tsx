@@ -243,6 +243,13 @@ export default function OralExamSession({
 
   const getFallbackQuestionText = (qIndex: number, theme: string) => {
     const cleanTheme = theme || '保持环境清洁';
+    const customQ = config.customQuestions?.[`q${qIndex}` as 'q1' | 'q2' | 'q3' | 'q4'];
+    if (customQ && customQ.trim()) {
+      if (qIndex === 1) {
+        return `现在我们进入看录像说话的环节，请你看录像。${customQ.trim()}`;
+      }
+      return customQ.trim();
+    }
     if (qIndex === 1) return `现在我们进入看录像说话的环节，请你看录像。说一说你在这个录像中看到的事情。`;
     if (qIndex === 2) return `在日常生活里，你有没有和“${cleanTheme}”相关的经验？请和考官说一说。`;
     if (qIndex === 3) return `有些人觉得“${cleanTheme}”和小学生没有关系，你赞同吗？为什么？`;
@@ -261,6 +268,11 @@ export default function OralExamSession({
     let textToUse = '';
     try {
       const scenesText = (config.scenes || []).map((s: any) => `场景 ${s.sceneNumber}：${s.description}`).join('\n');
+      const currentCustomQ = config.customQuestions && config.customQuestions[`q${currentQuestionIndex}` as 'q1'|'q2'|'q3'|'q4'] ? config.customQuestions[`q${currentQuestionIndex}` as 'q1'|'q2'|'q3'|'q4'].trim() : '';
+      const customQInstruction = currentCustomQ 
+    ? `\n【用户自定义指定考题】\n用户（教师/家长）为第 ${currentQuestionIndex} 题专门指定了以下提问内容：“${currentCustomQ}”。请你在提问第 ${currentQuestionIndex} 题时，必须包含并围绕这道指定的题目展开提问，绝对不能替换成其他无关问题。\n`
+    : '';
+
       const systemInstruction = `
 You are a Singapore MOE PSLE Chinese Oral Examiner with 20 years of experience. Your goal is to conduct a highly realistic mock oral exam in Video-Based Conversation (录像口试会话) for a 12-year-old student via standard conversational turns.
 
@@ -276,6 +288,7 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
 - 主题：${config.theme}
 - 旁白：${config.narration}
 - 录像画面描述：\n${scenesText}
+- 用户自定义指定考题：${customQInstruction}
 
 【问题变化与多样性要求】
 你必须根据当前问题序号（第 ${qIndex} 题）结合录像细节进行动态变体提问，绝对不能每次都问一模一样的原题。必须短小精悍。
@@ -306,7 +319,13 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemInstruction }] },
           contents: contents,
-          generationConfig: { temperature: 0.7 }
+          generationConfig: { temperature: 0.7 },
+          theme: config.theme,
+          narration: config.narration,
+          scenes: config.scenes,
+          chatHistory: history,
+          currentQuestionIndex: qIndex,
+          customQuestions: config.customQuestions,
         }),
       });
 

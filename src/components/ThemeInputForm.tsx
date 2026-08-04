@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Video, Plus, Trash2, ArrowRight, Sparkles } from 'lucide-react';
+import { BookOpen, Video, Plus, Trash2, ArrowRight, Sparkles, ChevronDown, Sliders, HelpCircle } from 'lucide-react';
 import { ExamConfig, VideoScene } from '../types';
 
 interface ThemeInputFormProps {
@@ -290,6 +290,15 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
     { sceneNumber: 3, description: '' }
   ]);
 
+  const [isCustomThemeOpen, setIsCustomThemeOpen] = useState<boolean>(false);
+  const [isCustomQuestionsOpen, setIsCustomQuestionsOpen] = useState<boolean>(false);
+  const [customQuestions, setCustomQuestions] = useState<{ q1: string; q2: string; q3: string; q4: string }>({
+    q1: '',
+    q2: '',
+    q3: '',
+    q4: '',
+  });
+
   const handlePresetChange = (idx: number) => {
     setSelectedThemeIndex(idx);
     const preset = PRESETS[idx];
@@ -319,10 +328,19 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const activeQuestions = {
+      q1: customQuestions.q1.trim(),
+      q2: customQuestions.q2.trim(),
+      q3: customQuestions.q3.trim(),
+      q4: customQuestions.q4.trim(),
+    };
+    const hasCustomQ = !!(activeQuestions.q1 || activeQuestions.q2 || activeQuestions.q3 || activeQuestions.q4);
+
     onStartConfig({
       theme: customTheme || PRESETS[selectedThemeIndex].theme,
       narration: customNarration || PRESETS[selectedThemeIndex].narration,
-      scenes: scenes.filter(s => s.description.trim() !== '')
+      scenes: scenes.filter(s => s.description.trim() !== ''),
+      customQuestions: hasCustomQ ? activeQuestions : undefined
     });
   };
 
@@ -335,30 +353,32 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
           <h2 className="relative z-10 text-3xl font-bold text-[#4A4643] flex items-center justify-center gap-3 drop-shadow-sm">
             <Sparkles className="h-7 w-7 text-[#99A08F]" />
-            PSLE 华文模拟口试练习
+            PSLE 华文口试 模拟练习
           </h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-8">
           
-          {/* Preset Selector */}
+          {/* Preset Selector - 2 Column Grid displayed all at once */}
           <div className="space-y-4">
             <label className="flex items-center gap-2 text-sm font-bold text-[#6D5C4A] uppercase tracking-wider">
               <BookOpen className="h-5 w-5 text-natural-sage" />
-              1. 选择考试主题 (Select Exam Theme)
+              1. 选择预设主题 (Select Preset Theme)
             </label>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-  		从以下 30 个预先设定的口试主题中选择，也可以修改或自定主题。</p>
+  		从以下 30 个预先设定的口试主题中选择，也可以修改或自定主题、旁白、场景描述及口试问题。<br />
+		<strong> 此模拟口试练习会朗读出旁白和场景描述，并无播放任何录像视频。</strong></p>
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-Please select from the following 30 preset oral themes for your practice. You can also edit or customise with your own theme and scenarios.
+Please select from the following 30 preset oral conversation themes for your practice. You can also edit or customise with your own theme and scenarios. <br />
+		<strong>No actual video will be played. Scenario descriptions and narration will be read aloud.</strong>
 		</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-72 overflow-y-auto p-2 border border-[#EADFCD] rounded-xl bg-white shadow-inner custom-scrollbar">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {PRESETS.map((preset, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => handlePresetChange(idx)}
-                  className={`text-left px-4 py-3 rounded-lg border transition-all text-sm font-medium ${
+                  className={`text-left px-4 py-3 rounded-xl border transition-all text-sm font-medium cursor-pointer ${
                     selectedThemeIndex === idx 
                     ? 'border-[#D8C3A8] bg-[#FAF7F2] text-[#5C4D3C] shadow-sm ring-1 ring-[#D8C3A8]' 
                     : 'border-natural-border bg-white text-natural-text hover:border-[#D8C3A8] hover:bg-[#FAF7F2]/50'
@@ -370,88 +390,189 @@ Please select from the following 30 preset oral themes for your practice. You ca
             </div>
           </div>
 
-          {/* Theme & Narration Inputs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-5 rounded-2xl border border-natural-border shadow-sm">
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-natural-muted">
-                自定主题 (Customise Theme)
-              </label>
-              <input
-                type="text"
-                value={customTheme}
-                onChange={(e) => setCustomTheme(e.target.value)}
-                placeholder="例如: 保持环境清洁"
-                className="w-full rounded-xl border border-natural-border bg-natural-bg px-4 py-3 text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
-                required
+          {/* Collapsible Section 1: Custom Theme, Narration & Scenes */}
+          <div className="border border-[#EADFCD] rounded-2xl bg-white/70 overflow-hidden shadow-sm transition-all">
+            <button
+              type="button"
+              onClick={() => setIsCustomThemeOpen(!isCustomThemeOpen)}
+              className="w-full flex items-center justify-between p-4 bg-white hover:bg-[#FAF7F2] transition-colors text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <Sliders className="h-5 w-5 text-natural-sage shrink-0" />
+                <span className="font-bold text-sm text-[#6D5C4A]">
+                  自定主题、旁白与场景描述 (Customise Theme, Narration & Video Scenes)
+                </span>
+              </div>
+              <ChevronDown
+                className={`h-4 w-4 text-[#6D5C4A] transition-transform duration-200 shrink-0 ${
+                  isCustomThemeOpen ? 'rotate-180' : ''
+                }`}
               />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-natural-muted">
-                录像旁白 (Video Narration)
-              </label>
-              <input
-                type="text"
-                value={customNarration}
-                onChange={(e) => setCustomNarration(e.target.value)}
-                placeholder="例如: 保持环境清洁，人人有责"
-                className="w-full rounded-xl border border-natural-border bg-natural-bg px-4 py-3 text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
-                required
-              />
-            </div>
-          </div>
+            </button>
 
-          {/* Scenes Section */}
-          <div className="space-y-5">
-            <div className="flex items-center justify-between border-b border-natural-border pb-3">
-              <label className="flex items-center gap-2 text-sm font-bold text-[#6D5C4A] uppercase tracking-wider">
-                <Video className="h-5 w-5 text-natural-sage" />
-                2. 设定录像场景 (Define Video Scenes)
-              </label>
-
-              <button
-                type="button"
-                onClick={addScene}
-                className="flex items-center gap-1.5 text-xs font-semibold text-natural-sage hover:text-natural-sage-dark bg-natural-sage/10 hover:bg-natural-sage/20 px-3 py-1.5 rounded-full transition"
-              >
-                <Plus className="h-3.5 w-3.5" /> 添加场景
-              </button>
-            </div>
-		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-		模拟口试练习将不会提供任何录像，系统会直接朗读旁白和录像场景描述。</p>
-		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
-		No actual video will be played. Scenario descriptions and narration will be read aloud.</p>
-            <div className="space-y-4">
-              {scenes.map((scene, idx) => (
-                <div key={idx} className="flex gap-4 items-start bg-white p-4 rounded-xl border border-natural-border shadow-sm group">
-                  <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-natural-sage/20 text-natural-sage-dark font-bold text-sm border border-natural-sage/30">
-                    {scene.sceneNumber}
+            {isCustomThemeOpen && (
+              <div className="p-5 border-t border-[#EADFCD] space-y-6 bg-white">
+                {/* Theme & Narration Inputs */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-natural-muted">
+                      自定主题 (Theme)
+                    </label>
+                    <input
+                      type="text"
+                      value={customTheme}
+                      onChange={(e) => setCustomTheme(e.target.value)}
+                      placeholder="例如: 保持环境清洁"
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-4 py-3 text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
+                    />
                   </div>
                   
-                  <div className="flex-grow">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-natural-muted">
+                      录像旁白 (Video Narration)
+                    </label>
+                    <input
+                      type="text"
+                      value={customNarration}
+                      onChange={(e) => setCustomNarration(e.target.value)}
+                      placeholder="例如: 保持环境清洁，人人有责"
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-4 py-3 text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
+                    />
+                  </div>
+                </div>
+
+                {/* Scenes Section */}
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between border-b border-natural-border pb-3">
+                    <label className="flex items-center gap-2 text-sm font-bold text-[#6D5C4A] uppercase tracking-wider">
+                      <Video className="h-5 w-5 text-natural-sage" />
+                      设定录像场景 (Define Video Scenes)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={addScene}
+                      className="flex items-center gap-1.5 text-xs font-semibold text-natural-sage hover:text-natural-sage-dark bg-natural-sage/10 hover:bg-natural-sage/20 px-3 py-1.5 rounded-full transition cursor-pointer"
+                    >
+                      <Plus className="h-3.5 w-3.5" /> 添加场景
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {scenes.map((scene, idx) => (
+                      <div key={idx} className="flex gap-4 items-start bg-natural-bg/50 p-4 rounded-xl border border-natural-border shadow-xs group">
+                        <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-natural-sage/20 text-natural-sage-dark font-bold text-sm border border-natural-sage/30">
+                          {scene.sceneNumber}
+                        </div>
+                        
+                        <div className="flex-grow">
+                          <textarea
+                            value={scene.description}
+                            onChange={(e) => handleSceneChange(idx, e.target.value)}
+                            placeholder={`场景 ${scene.sceneNumber} 的具体细节...`}
+                            className="w-full resize-none rounded-lg border border-natural-border bg-white px-3 py-2 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
+                            rows={2}
+                          />
+                        </div>
+
+                        {scenes.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeScene(idx)}
+                            className="self-start text-natural-muted hover:text-natural-coral-dark p-1.5 rounded-lg hover:bg-natural-coral/10 transition cursor-pointer"
+                            title="删除此场景"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Collapsible Section 2: Custom Questions */}
+          <div className="border border-[#EADFCD] rounded-2xl bg-white/70 overflow-hidden shadow-sm transition-all">
+            <button
+              type="button"
+              onClick={() => setIsCustomQuestionsOpen(!isCustomQuestionsOpen)}
+              className="w-full flex items-center justify-between p-4 bg-white hover:bg-[#FAF7F2] transition-colors text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <HelpCircle className="h-5 w-5 text-natural-sage shrink-0" />
+                <span className="font-bold text-sm text-[#6D5C4A]">
+                  自定考官提问 Q1 - Q4 (Customise Examiner Questions)
+                </span>
+              </div>
+              <ChevronDown
+                className={`h-4 w-4 text-[#6D5C4A] transition-transform duration-200 shrink-0 ${
+                  isCustomQuestionsOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {isCustomQuestionsOpen && (
+              <div className="p-5 border-t border-[#EADFCD] space-y-4 bg-white">
+                <p className="text-xs text-natural-muted font-medium leading-relaxed bg-[#FAF7F2] p-3 rounded-xl border border-[#EADFCD]/60">
+                  💡 提示：您可以为特定题号指定自定义问题（例如仅指定 Q1 和 Q3）。留空的题号将由系统自动根据考题主题与录像画面智能生成。
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-[#6D5C4A]">
+                      第一题 Q1 (看录像说话内容与感受)
+                    </label>
                     <textarea
-                      value={scene.description}
-                      onChange={(e) => handleSceneChange(idx, e.target.value)}
-                      placeholder={`场景 ${scene.sceneNumber} 的具体细节...`}
-                      className="w-full resize-none rounded-lg border border-natural-border bg-natural-bg px-3 py-2 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50"
+                      value={customQuestions.q1}
+                      onChange={(e) => setCustomQuestions({ ...customQuestions, q1: e.target.value })}
+                      placeholder="留空则由系统智能生成第一题（例如：说一说你在录像中看到的事情...）"
                       rows={2}
-                      required
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-3.5 py-2.5 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50 resize-none"
                     />
                   </div>
 
-                  {scenes.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeScene(idx)}
-                      className="self-start text-natural-muted hover:text-natural-coral-dark p-1.5 rounded-lg hover:bg-natural-coral/10 transition opacity-0 group-hover:opacity-100"
-                      title="删除此场景"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  )}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-[#6D5C4A]">
+                      第二题 Q2 (生活经历与亲身感受)
+                    </label>
+                    <textarea
+                      value={customQuestions.q2}
+                      onChange={(e) => setCustomQuestions({ ...customQuestions, q2: e.target.value })}
+                      placeholder="留空则由系统智能生成第二题（例如：你有没有和这个主题相关的经验...）"
+                      rows={2}
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-3.5 py-2.5 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50 resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-[#6D5C4A]">
+                      第三题 Q3 (看法观点与社会讨论)
+                    </label>
+                    <textarea
+                      value={customQuestions.q3}
+                      onChange={(e) => setCustomQuestions({ ...customQuestions, q3: e.target.value })}
+                      placeholder="留空则由系统智能生成第三题（例如：你同意这个观点吗？为什么...）"
+                      rows={2}
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-3.5 py-2.5 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50 resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-[#6D5C4A]">
+                      第四题 Q4 (具体建议与解决办法)
+                    </label>
+                    <textarea
+                      value={customQuestions.q4}
+                      onChange={(e) => setCustomQuestions({ ...customQuestions, q4: e.target.value })}
+                      placeholder="留空则由系统智能生成第四题（例如：你有什么切实可行的好建议...）"
+                      rows={2}
+                      className="w-full rounded-xl border border-natural-border bg-natural-bg px-3.5 py-2.5 text-xs sm:text-sm focus:border-[#D8C3A8] focus:outline-none focus:ring-2 focus:ring-[#EADFCD] transition-all font-medium text-natural-text placeholder:text-natural-muted/50 resize-none"
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Submit Action */}

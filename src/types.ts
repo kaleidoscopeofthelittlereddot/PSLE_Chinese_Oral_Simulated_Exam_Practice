@@ -8,6 +8,12 @@ export interface ExamConfig {
   theme: string;
   narration: string;
   scenes: VideoScene[];
+  customQuestions?: {
+    q1?: string;
+    q2?: string;
+    q3?: string;
+    q4?: string;
+  };
 }
 
 export type ExamState = 
