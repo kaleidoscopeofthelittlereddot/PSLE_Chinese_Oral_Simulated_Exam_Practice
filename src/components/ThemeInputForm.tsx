@@ -4,6 +4,7 @@ import { ExamConfig, VideoScene } from '../types';
 
 interface ThemeInputFormProps {
   onStartConfig: (config: ExamConfig) => void;
+  onSwitchToReadAloud?: () => void;
 }
 
 // 30 Predefined official MOE PSLE Oral themes and predictions based on 9-year data & trends
@@ -280,7 +281,7 @@ const PRESETS: ExamConfig[] = [
   }
 ];
 
-export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig }) => {
+export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig, onSwitchToReadAloud }) => {
   const [selectedThemeIndex, setSelectedThemeIndex] = useState<number>(0);
   const [customTheme, setCustomTheme] = useState<string>('');
   const [customNarration, setCustomNarration] = useState<string>('');
@@ -353,18 +354,33 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
           <h2 className="relative z-10 text-3xl font-bold text-[#4A4643] flex items-center justify-center gap-3 drop-shadow-sm">
             <Sparkles className="h-7 w-7 text-[#99A08F]" />
-            PSLE 华文口试 模拟练习
+            PSLE 华文模拟口试练习
           </h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-8">
           
-          {/* Preset Selector - 2 Column Grid displayed all at once */}
+          {/* Preset Selector - Header with Responsive Quick Switch Button */}
           <div className="space-y-4">
-            <label className="flex items-center gap-2 text-sm font-bold text-[#6D5C4A] uppercase tracking-wider">
-              <BookOpen className="h-5 w-5 text-natural-sage" />
-              1. 选择预设主题 (Select Preset Theme)
-            </label>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EADFCD]/60 pb-3">
+              <label className="flex items-center gap-2 text-sm font-bold text-[#6D5C4A] uppercase tracking-wider">
+                <BookOpen className="h-5 w-5 text-natural-sage shrink-0" />
+                <span>1. 选择预设考试主题 (Select Preset Exam Theme)</span>
+
+              </label>
+
+              {onSwitchToReadAloud && (
+                <button
+                  type="button"
+                  onClick={onSwitchToReadAloud}
+                  className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-[#FAF7F2] text-[#6D5C4A] border border-[#D8C3A8] rounded-xl text-xs font-bold transition shadow-2xs hover:shadow-xs cursor-pointer group shrink-0"
+                >
+                  <BookOpen className="h-4 w-4 text-natural-sage group-hover:scale-110 transition-transform shrink-0" />
+                  <span>切换 朗读短文练习</span>
+                </button>
+              )}
+            </div>
+
 		<p className="text-xs text-gray-500 mt-1 mb-3 font-normal normal-case tracking-normal">
   		从以下 30 个预先设定的口试主题中选择，也可以修改或自定主题、旁白、场景描述及口试问题。<br />
 		<strong> 此模拟口试练习会朗读出旁白和场景描述，并无播放任何录像视频。</strong></p>
@@ -372,6 +388,7 @@ export const ThemeInputForm: React.FC<ThemeInputFormProps> = ({ onStartConfig })
 Please select from the following 30 preset oral conversation themes for your practice. You can also edit or customise with your own theme and scenarios. <br />
 		<strong>No actual video will be played. Scenario descriptions and narration will be read aloud.</strong>
 		</p>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {PRESETS.map((preset, idx) => (
                 <button

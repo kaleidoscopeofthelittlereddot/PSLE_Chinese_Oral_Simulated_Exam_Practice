@@ -22,7 +22,50 @@ export type ExamState =
   | 'exam_active' 
   | 'exam_completed' 
   | 'feedback_active' 
-  | 'report_ready';
+  | 'report_ready'
+  | 'read_aloud_setup'
+  | 'read_aloud_prep'
+  | 'read_aloud_recording'
+  | 'read_aloud_report';
+
+export interface ReadAloudConfig {
+  passageTitle?: string;
+  passageText: string;
+  audioBlob?: Blob;
+  audioUrl?: string;
+  audioBase64?: string;
+  audioMimeType?: string;
+}
+
+export interface ReadAloudMisreadWord {
+  character: string;
+  errorType: string;
+  pronouncedAs: string;
+  correctPinyin: string;
+  context: string;
+}
+
+export interface ReadAloudRubricItem {
+  score: number;
+  maxScore: number;
+  comments: string;
+}
+
+export interface ReadAloudReportData {
+  score: number; // total score out of 20
+  maxScore: number;
+  rubricBreakdown: {
+    pronunciation: ReadAloudRubricItem;
+    fluency: ReadAloudRubricItem;
+    expression: ReadAloudRubricItem;
+    accuracy: ReadAloudRubricItem;
+  };
+  misreadWords: ReadAloudMisreadWord[];
+  expressionNeeds: string[];
+  strengths: string[];
+  improvements: string[];
+  overallComments: string;
+}
 
 export interface ChatMessage {
   id: string;

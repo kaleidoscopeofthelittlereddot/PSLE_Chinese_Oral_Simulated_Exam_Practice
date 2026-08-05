@@ -264,7 +264,7 @@
     padding: 1rem;
     margin: 1rem 0;
     border-radius: 4px;
-    font-size: 0.95rem;
+    font-size: 0.7rem;
 }
 
 .cost-estimate {
@@ -296,9 +296,10 @@ code {
 }
 
 .goodwill-notice {
-    font-weight: 600;
-    color: #c0392b;
+    font-weight: normal;
+    color: var(--accent-blue);
     margin-bottom: 1.5rem;
+    font-size: 0.8rem;
 }
 
 .conditions-list {
@@ -325,12 +326,12 @@ code {
     margin-bottom: 0.5rem;
     letter-spacing: 0.5px;
     color: #2c3e50;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .legal-box p {
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     margin: 0;
     line-height: 1.5;
     color: #566573;
@@ -378,7 +379,7 @@ code {
             <a href="#disclaimer" class="btn">Jump to Launch App | 立即使用</a>
 
 	<p style="font-size: 0.75rem; color: #857d75; text-align: center; margin-top: 30px; line-height: 1.6;">
-    * <strong>Disclaimer:</strong> This application is powered by the Google Gemini API. AI-generated outputs can contain errors; please independently verify all critical feedback and analysis.</p>
+    * <strong>Disclaimer:</strong> This application is powered by the Google Gemini API. AI-generated outputs can contain errors. Please independently verify all critical feedback and analysis.</p>
         </header>
 
         <!-- 2. Features Preview -->
@@ -390,8 +391,8 @@ code {
                     <img src="/screenshots/themes.png" alt="30 Preset Oral Exam Themes" class="screenshot-img">
                 </div>
                 <div class="feature-text f1">
-                    <h2>30 Preset Oral Exam Themes <br /><span class="zh">三十个预设口试题目</span></h2>
-                    <p>Choose from 30 oral exam themes with preset narrations and scenario descriptions</p>
+                    <h2>30 Preset Oral Conversation Themes <br /><span class="zh">三十个预设口试会话题目</span></h2>
+                    <p>Choose from 30 oral conversation themes with preset narrations and scenario descriptions</p>
 		<p style="font-size: 0.75rem; color: #857d75; text-align: left; margin-top: 30px; line-height: 1.6;">
    		No actual video will be played. Scenario descriptions and narration will be read aloud.</p>
                 </div>
@@ -403,8 +404,8 @@ code {
                     <img src="/screenshots/customise.png" alt="Customise Themes" class="screenshot-img">
                 </div>
                 <div class="feature-text f2">
-                    <h2>Customise Your Own Themes <br /><span class="zh">自定口试题目</span></h2>
-                    <p>Have a specific theme and scenarios you want your child to practise on? You can modify or enter your own customised themes and descriptions.</p>
+                    <h2>Customise Your Own Themes & Questions<br /><span class="zh">自定口试题目和问题</span></h2>
+                    <p>Have a specific theme and scenarios you want your child to practise on? You can modify or enter your own customised themes, descriptions or even specify the examiner questions.</p>
                 </div>
             </div>
 
@@ -445,6 +446,47 @@ code {
    		The performance assessment will also provide an estimated score based on the independent grading rubric of our app for practice reference only and <strong>does not reflect official PSLE scoring standards.</strong></p>
                 </div>
             </div>
+
+            <!-- Feature 6: Right Image, Left Text -->
+            <div class="feature-row reverse">
+                <div class="feature-img-container f1-img">
+                    <img src="/screenshots/readaloud.png" alt="Read-Aloud Practice" class="screenshot-img">
+                </div>
+                <div class="feature-text f1">
+                    <h2>Read-Aloud Practice | Customise Passage | Upload Screenshot Function <br />
+			<span class="zh">新增! 短文朗读练习 | 支持照片上载自定短文 </span></h2>
+                    <p>Newly Added Function! You can now customise the reading passage for your child to practice read-aloud, or even just upload a photo of the text!</p>
+                </div>
+            </div>
+
+            <!-- Feature 7: Left Image, Right Text -->
+            <div class="feature-row">
+                <div class="feature-img-container f2-img">
+                    <img src="/screenshots/pronunciation.png" alt="Pronunciation Check" class="screenshot-img">
+                </div>
+                <div class="feature-text f2">
+                    <h2>Pronunciation Checker <br /><span class="zh">查检读音功能</span></h2>
+                    <p>Not sure how to read a word? You can highlight the unfamiliar word in the passage to check on its correct pronunciation.</p>
+		<p style="font-size: 0.75rem; color: #857d75; text-align: left; margin-top: 30px; line-height: 1.6;">
+   		This feature is useful for uploading passages for Listening Comprehension practice too!</p>
+                </div>
+            </div>
+
+            <!-- Feature 8: Right Image, Left Text -->
+            <div class="feature-row reverse">
+                <div class="feature-img-container f3-img">
+                    <img src="/screenshots/readaloud_report.png" alt="Read-Aloud Practice Report" class="screenshot-img">
+                </div>
+                <div class="feature-text f3">
+                    <h2>Highlights of Strengths and Mispronunciations<br />
+		    <span class="zh">短文朗读综合评估</span></h2>
+                    <p>A detailed performance assessment on your child's read-aloud practice session will be generated, providing you with highlights of your child's strengths & areas for improvement. Mispronunciations and specific phrases that need more expressive reading will be explained.</p>
+		    <p style="font-size: 0.75rem; color: #857d75; text-align: left; margin-top: 30px; line-height: 1.6;">
+   		The performance assessment will also provide an estimated score based on the independent grading rubric of our app for practice reference only and <strong>does not reflect official PSLE scoring standards.</strong></p>
+
+                </div>
+            </div>
+
 <center>
 	<p><strong> As featured in "Kaleidoscope of the Little Red Dot" podcast: Tune in for more details!</strong></p>
 
@@ -464,23 +506,25 @@ code {
             <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a>.
             
             <div class="info-alert">
-                Due to the use of AI to analyse the submitted answers, using a Default Gemini API Key from the free tier may face usage limits during analysis, leading to failure in generating the customised feedback and written reports. In addition, Google's Free Tier API may log and human-review prompts and responses for product improvement. To ensure complete privacy for your child's voice data and experience the full features of the app, it is strongly recommended to use a Paid Tier key (Pay-per-request) where Google does not retain or review your data. You may also turn off the auto-reload function of your Google Cloud credits to ensure that no accidental overspending may incur. Please monitor your Google Cloud console. You are fully responsible for any charges on your account. Please note that surges in API requests to Gemini may also cause server time-out. 
-	    
-	    <p style="color: #518DD1;">You can input a random number as your API Key if you only want to explore the user interface without accessing the AI features.</p>
+                Due to the use of AI to analyse the submitted answers, using a Default Gemini API Key from the free tier may face usage limits during analysis, leading to failure in generating the customised feedback and written reports. In addition, Google's Free Tier API may log and human-review prompts and responses for product improvement. To ensure complete privacy for your child's voice data and experience the full features of the app, it is strongly recommended to use a Paid Tier key (Pay-per-request) where Google does not retain or review your data. You may also turn off the auto-reload function of your Google Cloud credits to ensure that no accidental overspending may incur. Please monitor your Google Cloud console. You are fully responsible for any charges on your account. Please note that surges in API requests to Gemini may also cause server time-out. 	    
             </div>
             
             <p class="cost-estimate">
-                <i>Average credit costs for completing ONE session including the interactive feedback with the written report is estimated around SGD $0.30 (as of July 2026).</i>
+                Average credit costs for completing ONE session including the interactive feedback with the written report is estimated around SGD $0.30 (as of July 2026).
+	    <p class="cost-estimate" style="color: #518DD1;">You can input a random number as your API Key if you only want to explore the user interface without accessing the AI features.</p>
             </p>
         </li>
         <li>
             <strong>Regarding your API Key:</strong> 
-            Your <code>personal Gemini API Key</code> will be stored locally in your browser cache. There is also a [Clear API Key] button at the footer of the App whenever you want to clear the stored API Key data. It is recommended to clear your API Key information from your browser when you have finished using the app, especially if you are using a shared device.
+            Your <code>personal Gemini API Key</code> will be stored locally in your browser cache. 
+            <div class="info-alert">
+There is also a [Clear API Key] button at the footer of the App whenever you want to clear the stored API Key data. It is recommended to clear your API Key information from your browser when you have finished using the app, especially if you are using a shared device.</div>
         </li>
         <li>
             <strong>Privacy Concerns with Google Gemini:</strong> 
             According to <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer">Gemini API Additional Terms of Service</a>, 
-            "When you use <strong>Paid Services</strong>, including, for example, the paid quota of the Gemini API, Google doesn't use your prompts (including associated system instructions, cached content, and files such as images, videos, or documents) or responses to improve our products..."
+            <div class="info-alert">
+            "When you use <strong>Paid Services</strong>, including, for example, the paid quota of the Gemini API, Google doesn't use your prompts (including associated system instructions, cached content, and files such as images, videos, or documents) or responses to improve our products..."</div>
         </li>
 	<li><a href="/privacy.html" target="_blank" style="color: var(--accent-green);"><strong>Read Our Privacy Policy</strong></a>
     </ol>
@@ -489,7 +533,7 @@ code {
         <p class="goodwill-notice">
             This application was originally designed via vibe coding in Google AI Studio as a personal study tool for the creator. It is now being shared publicly out of goodwill. The individual user is responsible for all risks involved when using this application. No technical support is provided.
         </p>
-
+    <div class="info-alert">
         <h3>Terms of Use and Disclaimer</h3>
         <p>This application was developed by an independent creator using AI-assisted generation ("vibe coding") for personal utility, and the project files are hosted publicly without charge. Because the creator is a non-professional developer, the application is provided strictly on a strictly on an "as-is", use-at-your-own-risk basis.</p>
 
@@ -502,7 +546,7 @@ code {
             <li><strong>Output Accuracy:</strong> Due to the unpredictable nature of Large Language Models, the accuracy, appropriateness, and completeness of the generated score, feedback and written reports cannot be guaranteed.</li>
 	    <li><strong>Independent Tool:</strong> This application is an independent educational tool and is NOT affiliated with, endorsed by, or sponsored by the Ministry of Education (MOE) or the Singapore Examinations and Assessment Board (SEAB).</li>
         </ul>
-
+    </div>
         <div class="legal-box">
             <h4>LEGAL DISCLAIMER & LIMITATION OF LIABILITY</h4>
             <p>THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR OR CREATOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
@@ -510,7 +554,7 @@ code {
 
    
     <div style="text-align: center; margin: 30px auto 20px auto; max-width: 650px; padding: 15px; background-color: rgba(91, 177, 91, 0.05); border: 1px solid rgba(91, 177, 91, 0.2); border-radius: 8px;">
-        <label style="cursor: pointer; display: flex; align-items: flex-start; justify-content: center; gap: 12px; font-size: 1.05rem; text-align: left;">
+        <label style="cursor: pointer; display: flex; align-items: flex-start; justify-content: center; gap: 12px; font-size: 0.8rem; text-align: left;">
             <input type="checkbox" id="consent-checkbox" style="width: 24px; height: 24px; cursor: pointer; margin-top: 3px;">
             <span>I am a parent or legal guardian. I confirm that I will facilitate this practice session for my child, acknowledge the limitations stated above, and agree to the <strong>Terms of Use</strong> and the <a href="/privacy.html" target="_blank" style="color: var(--accent-green);"><strong>Privacy Policy</strong></a>.</span>
         </label>
@@ -552,7 +596,7 @@ code {
 </script>
 
 	<p style="font-size: 0.7rem; color: #857d75; text-align: center; margin-top: 30px; line-height: 1.6;">
-    * <strong>Disclaimer:</strong> This application is powered by the Google Gemini API. AI-generated outputs can contain errors; please independently verify all critical feedback and analysis.<br />
+    * <strong>Disclaimer:</strong> This application is powered by the Google Gemini API. AI-generated outputs can contain errors. Please independently verify all critical feedback and analysis.<br />
     <span style="font-size: 0.7rem;">* <strong>免责声明：</strong> 本应用由 Google Gemini API 提供技术支持。人工智能生成的输出可能会存在错误，请务必自行核实所有重要的反馈与分析信息。</span>
 	</p>
 </section>
