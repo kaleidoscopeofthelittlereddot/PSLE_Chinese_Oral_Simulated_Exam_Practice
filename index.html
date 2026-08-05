@@ -273,8 +273,10 @@
 }
 
 .cost-estimate {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #666666;
+    max-width: 700px;
+    margin: 20px auto 20px auto;
 }
 
 /* Inline Code/Key Highlighting */
@@ -304,7 +306,9 @@ code {
     font-weight: normal;
     color: var(--accent-blue);
     margin-bottom: 1.5rem;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    max-width: 700px;
+    margin: 20px auto 20px auto;
 }
 
 .conditions-list {
@@ -383,6 +387,12 @@ code {
 
             <a href="#disclaimer" class="btn">Jump to Launch App | 立即使用</a>
 
+        <p class="goodwill-notice">
+            This application was originally designed via vibe coding in Google AI Studio as a personal study tool for the creator. It is now being shared publicly out of goodwill. The individual user only pays to Google AI Studio for using its personal API Key. Based on normal usage, average credit costs for completing ONE session including the interactive feedback with the written report is estimated around SGD $0.30 (as of July 2026).
+        </p>
+               
+        </p>
+
 	<p style="font-size: 0.75rem; color: #857d75; text-align: center; margin-top: 30px; line-height: 1.6;">
     * <strong>Disclaimer:</strong> This application is powered by the Google Gemini API. AI-generated outputs can contain errors. Please independently verify all critical feedback and analysis.</p>
         </header>
@@ -459,8 +469,8 @@ code {
                 </div>
                 <div class="feature-text f1">
                     <h2>Read-Aloud Practice | Customise Passage | Upload Screenshot Function <br />
-			<span class="zh">新增! 短文朗读练习 | 支持照片上载自定短文 </span></h2>
-                    <p>Newly Added Function! You can now customise the reading passage for your child to practice read-aloud, or even just upload a photo of the text!</p>
+			<span class="zh">短文朗读练习 | 支持照片上载自定短文 </span></h2>
+                    <p>Newly Added! Your child can practice the read-aloud segment with an in-built timer at the preparation stage. You can also customise the reading passage, or even just upload a photo of the text!</p>
                 </div>
             </div>
 
@@ -471,7 +481,7 @@ code {
                 </div>
                 <div class="feature-text f2">
                     <h2>Pronunciation Checker <br /><span class="zh">查检读音功能</span></h2>
-                    <p>Not sure how to read a word? You can highlight the unfamiliar word in the passage to check on its correct pronunciation.</p>
+                    <p>Not sure how to read a word? You can highlight the unfamiliar word in the passage to check for its correct pronunciation.</p>
 		<p style="font-size: 0.75rem; color: #857d75; text-align: left; margin-top: 30px; line-height: 1.6;">
    		This feature is useful for uploading passages for Listening Comprehension practice too!</p>
                 </div>
@@ -510,14 +520,16 @@ code {
             You can create your <code>personal Gemini API Key</code> by logging into 
             <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a>.
             
+	    <p class="cost-estimate" style="color: #518DD1;">You can input a random number as your API Key if you only want to explore the user interface without accessing the AI features.</p>
+
             <div class="info-alert">
                 Due to the use of AI to analyse the submitted answers, using a Default Gemini API Key from the free tier may face usage limits during analysis, leading to failure in generating the customised feedback and written reports. In addition, Google's Free Tier API may log and human-review prompts and responses for product improvement. To ensure complete privacy for your child's voice data and experience the full features of the app, it is strongly recommended to use a Paid Tier key (Pay-per-request) where Google does not retain or review your data. You may also turn off the auto-reload function of your Google Cloud credits to ensure that no accidental overspending may incur. Please monitor your Google Cloud console. You are fully responsible for any charges on your account. Please note that surges in API requests to Gemini may also cause server time-out. 	    
             </div>
-            
+          
             <p class="cost-estimate">
                 Average credit costs for completing ONE session including the interactive feedback with the written report is estimated around SGD $0.30 (as of July 2026).
-	    <p class="cost-estimate" style="color: #518DD1;">You can input a random number as your API Key if you only want to explore the user interface without accessing the AI features.</p>
             </p>
+
         </li>
         <li>
             <strong>Regarding your API Key:</strong> 
@@ -535,9 +547,7 @@ There is also a [Clear API Key] button at the footer of the App whenever you wan
     </ol>
 
     <div class="disclaimer-wrapper" id="disclaimer">
-        <p class="goodwill-notice">
-            This application was originally designed via vibe coding in Google AI Studio as a personal study tool for the creator. It is now being shared publicly out of goodwill. The individual user is responsible for all risks involved when using this application. No technical support is provided.
-        </p>
+
     <div class="info-alert">
         <h3>Terms of Use and Disclaimer</h3>
         <p>This application was developed by an independent creator using AI-assisted generation ("vibe coding") for personal utility, and the project files are hosted publicly without charge. Because the creator is a non-professional developer, the application is provided strictly on a strictly on an "as-is", use-at-your-own-risk basis.</p>
@@ -572,7 +582,7 @@ There is also a [Clear API Key] button at the footer of the App whenever you wan
     <a href="/app/" class="btn" id="launch-btn" style="pointer-events: none; opacity: 0.5;">Launch App Now<span class="zh" style="margin-left: 8px;">立即使用</span></a>
     
     <p style="font-size: 0.6rem; color: #857d75; text-align: center; margin-top: 5px; line-height: 1.6;">
-        Latest App Update: 1 Aug 2026
+        Latest App Update: 5 Aug 2026
     </p>
 </div>
 
