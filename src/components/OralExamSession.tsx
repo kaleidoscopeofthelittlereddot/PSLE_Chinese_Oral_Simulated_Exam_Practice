@@ -318,15 +318,9 @@ ${MASTER_GUIDE_EXAMINER_PROMPT}
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemInstruction }] },
+          systemInstruction: { parts: [{ text: systemInstruction }] },
           contents: contents,
-          generationConfig: { temperature: 0.7 },
-          theme: config.theme,
-          narration: config.narration,
-          scenes: config.scenes,
-          chatHistory: history,
-          currentQuestionIndex: qIndex,
-          customQuestions: config.customQuestions,
+          generationConfig: { temperature: 0.7 }
         }),
       });
 
